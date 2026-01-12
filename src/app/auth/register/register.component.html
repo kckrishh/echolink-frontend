@@ -1,0 +1,112 @@
+<div
+  class="min-h-screen w-full bg-bg-base flex items-center justify-center px-6"
+>
+  <!-- Outer container -->
+  <div
+    class="w-full max-w-5xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-md overflow-hidden grid grid-cols-1 md:grid-cols-2"
+  >
+    <!-- LEFT SIDE : Text / Branding -->
+    <div class="relative p-10 flex flex-col justify-center gap-6 bg-bg-panel">
+      <div>
+        <h1 class="text-3xl font-semibold text-text-heading leading-tight">
+          Create <br />
+          your EchoLink account
+        </h1>
+
+        <p class="mt-4 text-text-secondary text-sm max-w-sm">
+          Join EchoLink today and start real-time conversations with people you
+          care about.
+        </p>
+      </div>
+
+      <!-- Logo bottom-left -->
+      <div class="mt-10">
+        <div
+          class="h-12 w-12 rounded-2xl bg-brand/10 border border-border-base flex items-center justify-center shadow-echo"
+        >
+          <div class="h-6 w-6 rounded-md bg-brand"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE : Register Form -->
+    <div class="p-10 flex items-center">
+      <form
+        class="w-full space-y-5"
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <!-- Email -->
+        <div class="space-y-1">
+          <label class="text-sm text-text-secondary"> Email </label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+            class="w-full h-11 rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="space-y-1">
+          <label class="text-sm text-text-secondary"> Password </label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Create a password"
+            class="w-full h-11 rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
+          />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="space-y-1">
+          <label class="text-sm text-text-secondary"> Confirm password </label>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Repeat your password"
+            class="w-full h-11 rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
+          />
+        </div>
+
+        <!-- Terms -->
+        <label class="flex items-start gap-2 text-sm text-text-muted">
+          <input
+            type="checkbox"
+            formControlName="terms"
+            class="mt-1 accent-brand"
+          />
+          <span>
+            I agree to the
+            <a class="text-link hover:text-link-hover" href="#">
+              Terms of Service
+            </a>
+            and
+            <a class="text-link hover:text-link-hover" href="#">
+              Privacy Policy
+            </a>
+          </span>
+        </label>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full h-11 rounded-lg bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active transition font-medium"
+        >
+          Create account
+        </button>
+
+        <!-- Footer -->
+        <div class="pt-4 text-center text-sm text-text-muted">
+          Already have an account?
+          <a
+            routerLink="/auth/login"
+            class="text-link hover:text-link-hover transition"
+          >
+            Sign in
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

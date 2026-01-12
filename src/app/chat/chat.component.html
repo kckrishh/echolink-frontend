@@ -1,0 +1,19 @@
+<div class="h-[87vh] w-full overflow-hidden flex mx-auto">
+  <section
+    class="h-full w-full grid rounded-md shadow-2xl"
+    [ngClass]="{
+      'grid-cols-[0.5fr_1.8fr]': !isGroup,
+      'grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup
+    }"
+  >
+    <div class="bg-bg-panel min-w-0 h-full min-h-0">
+      <app-sidebar-left></app-sidebar-left>
+    </div>
+    <div class="bg-bg-panel min-w-0 h-full min-h-0">
+      <app-chat-main></app-chat-main>
+    </div>
+    <div class="bg-bg-panel min-w-0 h-full min-h-0" *ngIf="isGroup">
+      <app-sidebar-right></app-sidebar-right>
+    </div>
+  </section>
+</div>

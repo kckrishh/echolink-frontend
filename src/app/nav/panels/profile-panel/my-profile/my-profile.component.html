@@ -1,0 +1,256 @@
+<section class="w-[95vw] min-h-0 flex justify-center">
+  <main class="w-[60%] h-full bg-bg-panel">
+    <header
+      class="h-[19rem] w-full border-b border-border-base flex justify-center"
+    >
+      <div class="w-full h-full flex flex-col items-center pt-3">
+        <div
+          class="w-[20%] rounded-2xl bg-input-bg border border-border-base overflow-hidden"
+        >
+          <img [src]="me?.avatar" alt="" class="h-[10rem]" />
+        </div>
+        <div class="flex flex-col justify-center items-center py-4 gap-y-1.5">
+          <h2 class="text-text-heading font-bold text-4xl">{{ username }}</h2>
+          <p class="text-text-secondary pt-2">
+            {{ me?.bio }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div
+      class="flex justify-center my-6 items-center h-24 w-full px-[10%] gap-[2rem]"
+    >
+      <div class="w-[38%] text-center">
+        <h3 class="text-text-body text-xl font-semibold">Email</h3>
+        <p
+          class="bg-bg-overlay text-input-text border border-border-base rounded-2xl p-2 mt-2 text-lg"
+        >
+          {{ me?.email }}
+        </p>
+      </div>
+      <div class="w-[38%] text-center">
+        <h3 class="text-text-body text-xl font-semibold">Date Joined</h3>
+        <p
+          class="bg-bg-overlay text-input-text border border-border-base rounded-2xl p-2 mt-2 text-lg"
+        >
+          {{ me?.joinedDate | date : "MMMM d, y" }}
+        </p>
+      </div>
+      <div class="w-[38%] text-center">
+        <h3 class="text-text-body font-semibold text-xl">Contacts</h3>
+        <p
+          class="bg-bg-overlay text-input-text p-2 mt-2 border border-border-base rounded-2xl text-lg"
+        >
+          {{ me?.totalConversations }}
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col items-start justify-between m-6 gap-4 bg-bg-hover pt-4 pb-1"
+    >
+      <!-- CHANGE USERNAME (unchanged) -->
+      <article class="w-full">
+        <div
+          (click)="toggleShowChangeUsername($event)"
+          class="px-4 py-2 rounded-lg hover:bg-bg-overlay text-text-body text-sm font-medium flex items-center justify-between gap-2 w-full"
+        >
+          <div>
+            <lucide-icon
+              name="badge-check"
+              class="w-7 h-7 inline-block mr-2"
+            ></lucide-icon>
+            <span class="text-lg font-bold">Change Username</span>
+          </div>
+          <lucide-icon name="chevron-down" class="w-4 h-4"></lucide-icon>
+        </div>
+
+        <div
+          *ngIf="showChangeUsername"
+          class="w-[22rem] ml-8 flex flex-col gap-2"
+        >
+          <div class="flex flex-col gap-1">
+            <label class="text-text-muted text-md">Current Username</label>
+            <input class="h-4 p-4 rounded-xl" [value]="me?.username" disabled />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="text-text-muted text-md">New Username</label>
+            <input
+              type="text"
+              placeholder="Enter new username"
+              class="h-4 p-4 rounded-xl"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="text-text-muted text-xmd">Confirm new Username</label>
+            <input
+              type="text"
+              placeholder="Re-enter new username"
+              class="h-4 p-4 rounded-xl"
+            />
+          </div>
+
+          <button
+            type="button"
+            class="px-3 py-1.5 w-[10rem] mt-2 rounded-lg bg-brand-active hover:bg-brand-hover text-text-onAccent font-medium"
+          >
+            Save Changes
+          </button>
+        </div>
+      </article>
+
+      <!-- CHANGE PASSWORD (unchanged) -->
+      <article class="w-full">
+        <div
+          class="px-4 py-2 rounded-lg hover:bg-bg-overlay text-text-body text-sm font-medium flex justify-between items-center gap-2 w-full"
+          (click)="toggleShowChangePassword($event)"
+        >
+          <div>
+            <lucide-icon
+              name="lock"
+              class="w-7 h-7 inline-block mr-2"
+            ></lucide-icon>
+            <span class="font-bold text-lg"> Change Password </span>
+          </div>
+
+          <lucide-icon
+            *ngIf="!showChangePassword"
+            name="chevron-down"
+            class="w-4 h-4"
+          ></lucide-icon>
+          <lucide-icon
+            *ngIf="showChangePassword"
+            name="chevron-up"
+            class="w-4 h-4"
+          ></lucide-icon>
+        </div>
+
+        <div
+          *ngIf="showChangePassword"
+          class="w-[22rem] ml-8 flex flex-col gap-2"
+        >
+          <div class="flex flex-col gap-1">
+            <label class="text-text-muted text-md">Current password</label>
+            <input
+              type="password"
+              placeholder="Enter current password"
+              class="h-4 p-4 rounded-xl"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="text-text-muted text-md">New password</label>
+            <input
+              type="password"
+              placeholder="Enter new password"
+              class="h-4 p-4 rounded-xl"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="text-text-muted text-xmd">Confirm new password</label>
+            <input
+              type="password"
+              placeholder="Re-enter new password"
+              class="h-4 p-4 rounded-xl"
+            />
+          </div>
+
+          <button
+            type="button"
+            class="px-3 py-1.5 w-[10rem] mt-2 rounded-lg bg-brand-active hover:bg-brand-hover text-text-onAccent font-medium"
+          >
+            Save Changes
+          </button>
+        </div>
+      </article>
+
+      <!-- ✅ CHANGE AVATAR (FIXED PROPERLY) -->
+      <article class="w-full">
+        <div
+          class="px-4 py-2 rounded-lg hover:bg-bg-overlay text-text-body text-sm font-medium flex justify-between items-center gap-2 w-full"
+        >
+          <div>
+            <lucide-icon
+              name="image-plus"
+              class="w-7 h-7 inline-block mr-2"
+            ></lucide-icon>
+            <span class="font-bold text-lg">Change Avatar</span>
+          </div>
+          <lucide-icon
+            *ngIf="!showChangeAvatar"
+            name="chevron-down"
+            class="w-4 h-4"
+          ></lucide-icon>
+          <lucide-icon
+            *ngIf="showChangeAvatar"
+            name="chevron-up"
+            class="w-4 h-4"
+          ></lucide-icon>
+        </div>
+
+        <div class="mt-4 ml-8 flex gap-6 max-h-[32rem]">
+          <!-- LEFT: STICKY PREVIEW -->
+          <div class="w-[14rem] shrink-0">
+            <div class="sticky top-4 flex flex-col gap-3">
+              <img
+                *ngIf="selectedAvatar"
+                [src]="me?.avatar"
+                class="h-28 w-28 rounded-2xl border border-border-base bg-bg-overlay"
+              />
+
+              <div class="text-sm">
+                <p class="text-text-heading font-semibold">Avatar Preview</p>
+                <p class="text-text-muted leading-snug">
+                  This is how other users will see you across EchoLink.
+                </p>
+              </div>
+
+              <button
+                class="mt-2 px-4 py-2 rounded-lg bg-brand-active text-text-onAccent hover:bg-brand-hover transition"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT: SCROLLABLE AVATARS -->
+          <div class="flex-1 overflow-y-auto pr-2 flex flex-col gap-6">
+            <div *ngFor="let group of avatarGroups" class="flex flex-col gap-3">
+              <h4
+                class="text-text-secondary font-semibold text-sm tracking-wide"
+              >
+                {{ group.label }}
+              </h4>
+
+              <div class="grid grid-cols-4 gap-3">
+                <button
+                  *ngFor="let seed of group.seeds"
+                  (click)="selectAvatar(group.style, seed)"
+                  class="rounded-xl p-2 border transition"
+                  [ngClass]="{
+                    'border-brand-active bg-bg-hover shadow-echo':
+                      selectedAvatar?.style === group.style &&
+                      selectedAvatar?.seed === seed,
+                    'border-border-base hover:bg-bg-hover': !(
+                      selectedAvatar?.style === group.style &&
+                      selectedAvatar?.seed === seed
+                    )
+                  }"
+                >
+                  <img
+                    [src]="getAvatarUrl(group.style, seed)"
+                    class="h-14 w-14 rounded-lg bg-bg-overlay"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+</section>

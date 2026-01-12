@@ -1,0 +1,175 @@
+<section class="flex justify-around h-full relative">
+  <div class="flex w-[20%] items-center">
+    <img src="logo.png" class="w-20 h-20" alt="" srcset="" />
+    <h1 class="text-text-heading text-3xl font-bold -ml-2 tracking-widest">
+      ECHOLINK
+    </h1>
+  </div>
+  <div class="w-[40%] flex justify-center items-center">
+    <form class="w-full" (ngSubmit)="searchUser()">
+      <input
+        type="text"
+        [(ngModel)]="searchedUsername"
+        placeholder="Search users or groups"
+        name="search"
+        class="w-full h-10 rounded-2xl bg-input-bg border border-input-border text-text-body placeholder:text-input-placeholder px-4 outline-none hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus transition duration-150 ease-out"
+      />
+    </form>
+  </div>
+  <div class="flex justify-end items-center w-[30%]">
+    <a href="/chat" class="px-7 hover:text-button-primary-active">
+      <lucide-icon name="home" class="w-7 h-7 text-white"></lucide-icon>
+    </a>
+    <a href="" class="px-7">
+      <lucide-icon name="bell" class="w-7 h-7 text-white"></lucide-icon>
+    </a>
+    <a href="" class="px-7">
+      <lucide-icon name="settings" class="w-7 h-7 text-white"></lucide-icon>
+    </a>
+    <div class="relative px-7">
+      <!-- TRIGGER (avatar + chevron) -->
+      <button
+        class="relative cursor-pointer rounded-xl hover:bg-bg-hover px-2 py-1 transition"
+        (click)="toggleShowProfileDropDown($event)"
+      >
+        <img [src]="me?.avatar" class="h-14 w-14 rounded-lg" />
+
+        <div
+          class="w-5 h-5 absolute bg-black rounded-full flex items-center justify-center top-11"
+        >
+          <lucide-icon
+            name="chevron-down"
+            class="text-white w-4 h-4"
+          ></lucide-icon>
+        </div>
+      </button>
+
+      <!-- DROPDOWN (separate from the link) -->
+      <article
+        *ngIf="showProfileDropDown"
+        (click)="$event.stopPropagation()"
+        class="bg-bg-overlay absolute top-15 left-8 border border-border-base rounded-xl shadow-echo-md w-56 py-3 text-text-body text-sm z-50"
+      >
+        <div
+          class="flex items-center gap-3 px-4 py-2 border-b border-border-base"
+        >
+          <img
+            [src]="me?.avatar"
+            class="h-12 w-12 rounded-lg border border-border-base"
+          />
+          <div>
+            <h2 class="font-semibold text-lg text-text-heading truncate">
+              {{ username }}
+            </h2>
+          </div>
+        </div>
+
+        <div class="pt-2 profile-dropdown-container">
+          <button
+            class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left"
+            [routerLink]="'/profile'"
+            (click)="$event.stopPropagation()"
+          >
+            <lucide-icon
+              name="id-card"
+              class="w-4 h-4 text-text-secondary"
+            ></lucide-icon>
+            My Profile
+          </button>
+
+          <button
+            class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left"
+            [routerLink]="'/people'"
+            (click)="$event.stopPropagation()"
+          >
+            <lucide-icon
+              name="users"
+              class="w-4 h-4 text-text-secondary"
+            ></lucide-icon>
+            People & Requests
+          </button>
+
+          <button
+            class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left"
+          >
+            <lucide-icon
+              name="shield-alert"
+              class="w-4 h-4 text-text-secondary"
+            ></lucide-icon>
+            Message Privacy
+          </button>
+
+          <button
+            class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left text-red-400"
+          >
+            <lucide-icon name="log-out" class="w-4 h-4"></lucide-icon>
+            Log Out
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div
+    *ngIf="searchedResult"
+    class="fixed inset-0 bg-bg-base/80 backdrop-blur-sm flex items-center justify-center z-40"
+  >
+    <!-- MODAL CONTAINER -->
+    <div
+      class="bg-bg-overlay border border-border-base rounded-2xl shadow-echo-md w-[30rem] px-6 py-5 flex flex-col gap-5"
+    >
+      <!-- HEADER -->
+      <div class="flex justify-between items-center">
+        <h2 class="text-text-heading font-semibold text-lg tracking-wide">
+          User Found
+        </h2>
+        <button
+          (click)="closeModal()"
+          class="text-text-muted hover:text-text-body text-xl"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- USER CARD -->
+      <div
+        class="flex items-center gap-4 p-4 bg-bg-panel rounded-xl border border-border-base"
+      >
+        <img
+          [src]="
+            'https://api.dicebear.com/9.x/adventurer/svg?seed=' +
+            searchedResult.username
+          "
+          class="h-14 w-14 rounded-xl border border-border-base"
+        />
+
+        <div class="flex flex-col">
+          <span class="text-text-heading font-semibold text-base">
+            {{ searchedResult.username }}
+          </span>
+
+          <span class="text-text-muted text-xs">
+            Joined {{ searchedResult.joinedAt ? null : "2025, May 25" }}
+          </span>
+        </div>
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="flex justify-end gap-3">
+        <button
+          (click)="searchedResult = null"
+          class="px-5 py-1.5 border border-border-base text-text-secondary text-sm rounded-lg hover:bg-bg-hover transition"
+        >
+          Close
+        </button>
+
+        <button
+          (click)="openChat()"
+          class="px-5 py-1.5 bg-brand-active text-text-onAccent text-sm rounded-lg hover:bg-brand-hover transition"
+        >
+          Message
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

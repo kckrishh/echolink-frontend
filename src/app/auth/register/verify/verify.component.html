@@ -1,0 +1,98 @@
+<div
+  class="min-h-screen w-full bg-bg-base flex items-center justify-center px-6"
+>
+  <!-- Outer container -->
+  <div
+    class="w-full max-w-4xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-md overflow-hidden grid grid-cols-1 md:grid-cols-2"
+  >
+    <!-- LEFT SIDE : Text / Branding -->
+    <div class="relative p-10 flex flex-col justify-center gap-6 bg-bg-panel">
+      <div>
+        <h1 class="text-3xl font-semibold text-text-heading leading-tight">
+          Verify <br />
+          your email
+        </h1>
+
+        <p class="mt-4 text-text-secondary text-sm max-w-sm">
+          We’ve sent a 6-digit verification code to your email address. Enter it
+          below to continue setting up your EchoLink account.
+        </p>
+      </div>
+
+      <!-- Logo bottom-left -->
+      <div class="mt-10">
+        <div
+          class="h-12 w-12 rounded-2xl bg-brand/10 border border-border-base flex items-center justify-center shadow-echo"
+        >
+          <div class="h-6 w-6 rounded-md bg-brand"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE : Verify Form -->
+    <div class="p-10 flex items-center">
+      <form
+        [formGroup]="verifyForm"
+        (ngSubmit)="onSubmit()"
+        class="w-full space-y-6"
+      >
+        <!-- Info -->
+        <p class="text-sm text-text-muted">
+          Verification code sent to
+          <span class="text-text-body font-medium">
+            {{ email }}
+          </span>
+        </p>
+
+        <!-- Code input -->
+        <div class="space-y-1">
+          <label class="text-sm text-text-secondary"> Verification code </label>
+
+          <input
+            type="text"
+            formControlName="code"
+            placeholder="Enter 6-digit code"
+            maxlength="6"
+            inputmode="numeric"
+            class="w-full h-11 text-center tracking-widest text-lg rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
+          />
+
+          <p
+            *ngIf="
+              verifyForm.get('code')?.touched && verifyForm.get('code')?.invalid
+            "
+            class="text-sm text-text-danger"
+          >
+            Verification code is required.
+          </p>
+        </div>
+
+        <!-- API error -->
+        <p *ngIf="apiError" class="text-sm text-text-danger">
+          {{ apiError }}
+        </p>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="loading"
+          class="w-full h-11 rounded-lg bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active transition font-medium disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {{ loading ? "Verifying..." : "Verify email" }}
+        </button>
+
+        <!-- Resend -->
+        <div class="pt-4 text-center text-sm text-text-muted">
+          Didn’t receive the code?
+          <button
+            type="button"
+            (click)="resendCode()"
+            class="text-link hover:text-link-hover transition font-medium"
+          >
+            Resend code
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div
+  class="min-h-screen w-full bg-bg-base flex items-center justify-center px-6"
+>
+  <!-- Outer container -->
+  <div
+    class="w-full max-w-5xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-md overflow-hidden grid grid-cols-1 md:grid-cols-2"
+  >
+    <!-- LEFT SIDE : Text / Branding -->
+    <div class="relative p-10 flex flex-col justify-center gap-6 bg-bg-panel">
+      <div>
+        <h1 class="text-3xl font-semibold text-text-heading leading-tight">
+          Sign in <br />
+          to EchoLink
+        </h1>
+
+        <p class="mt-4 text-text-secondary text-sm max-w-sm">
+          Welcome back! <br />
+          Please sign in to your account to continue.
+        </p>
+      </div>
+
+      <!-- Logo bottom-left -->
+      <div class="mt-10">
+        <div
+          class="h-12 w-12 rounded-2xl bg-brand/10 border border-border-base flex items-center justify-center shadow-echo"
+        >
+          <div class="h-6 w-6 rounded-md bg-brand"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE : Form -->
+    <div class="p-10 flex items-center">
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="w-full space-y-5"
+      >
+        <!-- Username / Email -->
+        <div class="space-y-1">
+          <label class="text-sm text-text-secondary"> Email or username </label>
+
+          <input
+            type="text"
+            formControlName="username"
+            placeholder="Email or username"
+            class="w-full h-11 rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
+          />
+
+          <p
+            *ngIf="
+              loginForm.get('username')?.touched &&
+              loginForm.get('username')?.invalid
+            "
+            class="text-sm text-text-danger"
+          >
+            This field is required.
+          </p>
+        </div>
+
+        <!-- Password -->
+        <div class="space-y-1">
+          <label class="text-sm text-text-secondary"> Password </label>
+
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+            class="w-full h-11 rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
+          />
+
+          <p
+            *ngIf="
+              loginForm.get('password')?.touched &&
+              loginForm.get('password')?.invalid
+            "
+            class="text-sm text-text-danger"
+          >
+            This field is required.
+          </p>
+        </div>
+
+        <!-- Forgot -->
+        <div class="flex justify-end">
+          <a
+            href="#"
+            class="text-sm text-link hover:text-link-hover transition"
+          >
+            Forgot password?
+          </a>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full h-11 rounded-lg bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active transition font-medium"
+        >
+          Sign in
+        </button>
+
+        <!-- Footer -->
+        <div class="pt-4 text-center text-sm text-text-muted">
+          Don’t have an account?
+          <a
+            href="#"
+            class="text-link hover:text-link-hover transition"
+            routerLink="/auth/register"
+          >
+            Create one
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
