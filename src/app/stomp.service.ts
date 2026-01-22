@@ -12,7 +12,7 @@ export class StompService {
   constructor(private authService: AuthService) {
     const token = authService.getAccessToken();
     this.client = new Client({
-      brokerURL: 'ws://localhost:8080/ws',
+      brokerURL: 'wss:://echolink-backend.onrender.com/ws',
       reconnectDelay: 5000,
       beforeConnect: () => {
         const token = this.authService.getAccessToken();

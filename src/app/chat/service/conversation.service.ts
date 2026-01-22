@@ -7,7 +7,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 })
 export class ConversationService {
   constructor(private http: HttpClient) {}
-  baseUrl = 'http://localhost:8080/dm';
+  baseUrl = 'https://echolink-backend.onrender.com/dm';
 
   private conversations = new BehaviorSubject<[any] | []>([]);
   conversations$ = this.conversations.asObservable();
@@ -15,7 +15,7 @@ export class ConversationService {
     return this.http.get(`${this.baseUrl}/conversations`).pipe(
       tap((res: any) => {
         this.conversations.next(res);
-      })
+      }),
     );
   }
 
@@ -25,7 +25,7 @@ export class ConversationService {
     return this.http.get(`${this.baseUrl}/pendingConversations`).pipe(
       tap((res) => {
         this.pendingConversations.next(res);
-      })
+      }),
     );
   }
 
@@ -37,7 +37,7 @@ export class ConversationService {
 
   getSingleConversation(conversationId: any) {
     return this.http.get(
-      `${this.baseUrl}/${conversationId}/getSingleConversation`
+      `${this.baseUrl}/${conversationId}/getSingleConversation`,
     );
   }
 

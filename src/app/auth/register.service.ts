@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class RegisterService {
-  private baseUrl: string = 'http://localhost:8080/auth';
+  private baseUrl: string = 'https://echolink-backend.onrender.com/auth';
   constructor(private http: HttpClient) {}
 
   registerStart(email: string, password: string) {
@@ -23,7 +23,7 @@ export class RegisterService {
     email: string,
     username: string,
     bio: string,
-    avatar: string
+    avatar: string,
   ) {
     return this.http.post<void>(`${this.baseUrl}/complete-profile`, {
       email,

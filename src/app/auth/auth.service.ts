@@ -6,7 +6,7 @@ import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/auth';
+  private baseUrl = 'https://echolink-backend.onrender.com/auth';
 
   private accessToken: string | null = null;
   private loggedIn = new BehaviorSubject<any>(undefined);
@@ -23,7 +23,7 @@ export class AuthService {
     return this.http.post<any>(
       `${this.baseUrl}/login`,
       { username, password },
-      { withCredentials: true }
+      { withCredentials: true },
     );
   }
 
@@ -44,7 +44,7 @@ export class AuthService {
         catchError(() => {
           this.clearAccessToken();
           return of(void 0);
-        })
+        }),
       );
   }
 
