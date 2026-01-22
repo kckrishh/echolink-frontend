@@ -38,6 +38,15 @@
 
     <!-- Content -->
     <div class="bg-bg-overlay rounded-xl p-4">
+      <div
+        *ngIf="!friends?.length"
+        class="flex flex-col items-center justify-center py-16 text-center text-text-muted"
+      >
+        <p class="text-lg font-medium mb-2">No friends yet</p>
+        <p class="text-sm max-w-md">
+          When you add friends, they’ll appear here.
+        </p>
+      </div>
       <!-- Friends Tab -->
       <ng-container *ngIf="currTab === 'friends'">
         <article
@@ -49,10 +58,7 @@
             <!-- Avatar -->
             <img
               class="h-20 w-20 rounded-full border border-border-base flex-shrink-0"
-              [src]="
-                'https://api.dicebear.com/9.x/adventurer/svg?seed=' +
-                friend.username
-              "
+              [src]="friend.avatar"
               alt=""
             />
 
@@ -90,6 +96,27 @@
             </button>
           </div>
         </article>
+      </ng-container>
+      <ng-container *ngIf="currTab === 'requests'">
+        <div
+          *ngIf="!requests?.length"
+          class="flex flex-col items-center justify-center py-16 text-center text-text-muted"
+        >
+          <p class="text-lg font-medium mb-2">No pending requests</p>
+          <p class="text-sm max-w-md">
+            Friend requests you receive will show up here.
+          </p>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="currTab === 'blocked'">
+        <div
+          *ngIf="!blocked?.length"
+          class="flex flex-col items-center justify-center py-16 text-center text-text-muted"
+        >
+          <p class="text-lg font-medium mb-2">No blocked users</p>
+          <p class="text-sm max-w-md">Users you block will appear here.</p>
+        </div>
       </ng-container>
     </div>
   </main>

@@ -20,6 +20,7 @@ import {
   ImagePlus,
   BadgeCheck,
   ChevronUp,
+  Check,
 } from 'lucide-angular';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -55,6 +56,7 @@ import { RefreshInterceptor } from './auth/refresh.interceptor';
       Lock,
       ImagePlus,
       BadgeCheck,
+      Check,
     }),
   ],
   providers: [

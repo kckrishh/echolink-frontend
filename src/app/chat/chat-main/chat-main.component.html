@@ -10,7 +10,10 @@
       <div
         class="h-14 w-14 rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0"
       >
-        <img [src]="me.avatar" class="h-full w-full rounded-full" />
+        <img
+          [src]="clickedConvo.otherUserAvatar"
+          class="h-full w-full rounded-full"
+        />
       </div>
 
       <h3 class="px-2 text-[1.4rem]">{{ clickedConvo?.otherUsername }}</h3>
@@ -32,13 +35,13 @@
   <!-- message area  -->
   <div class="h-full overflow-y-auto px-4 py-2" #messageContainer>
     <div class="flex flex-col min-h-full gap-3 justify-end">
-      <div *ngFor="let message of messages" class="w-full">
+      <div *ngFor="let message of messages; let last = last" class="w-full">
         <!-- Row alignment -->
         <div
           class="flex w-full"
           [ngClass]="{
             'justify-end': message.senderId === me.id,
-            'justify-start': message.senderId !== me.id
+            'justify-start': message.senderId !== me.id,
           }"
         >
           <!-- Avatar + bubble -->
@@ -46,7 +49,7 @@
             class="flex items-end gap-2 max-w-[85%]"
             [ngClass]="{
               'flex-row': message.senderId !== me.id,
-              'flex-row-reverse': message.senderId === me.id
+              'flex-row-reverse': message.senderId === me.id,
             }"
           >
             <!-- ✅ Avatar only for OTHER user's messages -->
@@ -66,21 +69,37 @@
               class="flex flex-col"
               [ngClass]="{
                 'items-end': message.senderId === me.id,
-                'items-start': message.senderId !== me.id
+                'items-start': message.senderId !== me.id,
               }"
             >
               <span class="text-text-muted text-[0.7rem] mb-1">
-                {{ message.createdAt | date : "shortTime" }}
+                {{ message.createdAt | date: "shortTime" }}
               </span>
 
               <div
-                class="px-4 py-2 rounded-2xl max-w-[70%] whitespace-pre-line break-words shadow-echo-md"
+                class="px-4 py-2 rounded-2xl whitespace-pre-line break-words shadow-echo-md"
                 [ngClass]="{
                   'bg-brand text-white': message.senderId === me.id,
-                  'bg-bg-hover text-text-body': message.senderId !== me.id
+                  'bg-bg-hover text-text-body': message.senderId !== me.id,
                 }"
               >
                 {{ message.content }}
+              </div>
+              <div
+                *ngIf="last && message.senderId === me.id"
+                class="mt-1 flex justify-end"
+              >
+                <span
+                  class="flex items-center gap-1 text-sm font-medium"
+                  [ngClass]="
+                    isMessageSeen ? 'text-brand-active' : 'text-text-muted'
+                  "
+                >
+                  <!-- check icon -->
+                  <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
+
+                  {{ isMessageSeen ? "Seen" : "Sent" }}
+                </span>
               </div>
             </div>
           </div>
@@ -124,6 +143,27 @@
       </span>
     </div>
   </div>
+  <!-- Typing indicator (3 dots) -->
+  <div class="px-4 pb-2" *ngIf="isOtherTyping">
+    <div class="flex items-center gap-2">
+      <!-- avatar (optional) -->
+      <img
+        [src]="clickedConvo?.otherUserAvatar"
+        class="h-6 w-6 rounded-full border border-border-base"
+      />
+
+      <!-- bubble -->
+      <div
+        class="px-3 py-2 mt-3 rounded-2xl bg-bg-hover border border-border-base shadow-echo-md"
+      >
+        <div class="flex items-center gap-1">
+          <span class="typing-dot"></span>
+          <span class="typing-dot typing-dot-2"></span>
+          <span class="typing-dot typing-dot-3"></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- chat textbox  -->
   <div class="px-4 py-3 border-t border-border-base">
@@ -134,6 +174,7 @@
         class="w-full h-10 rounded-2xl bg-input-bg border border-input-border text-text-body placeholder:text-input-placeholder px-4 outline-none hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus transition duration-150 ease-out"
         name="message"
         [(ngModel)]="messageText"
+        (input)="onTyping()"
       />
     </form>
   </div>

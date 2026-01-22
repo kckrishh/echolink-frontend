@@ -24,10 +24,11 @@ export class DmComponent implements OnInit {
     this.getPendingConversations();
   }
 
-  openChat(user: any) {
-    this.conversationService.sendConvo(user);
+  openChat(convo: any) {
+    console.log(convo);
+    this.conversationService.sendConvo(convo);
     this.router.navigate(['/chat/dm'], {
-      queryParams: { conversationId: user.conversationId },
+      queryParams: { conversationId: convo.conversationId },
     });
   }
 

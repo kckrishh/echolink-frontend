@@ -68,7 +68,9 @@
           <button
             class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left"
             [routerLink]="'/profile'"
-            (click)="$event.stopPropagation()"
+            (click)="
+              $event.stopPropagation(); toggleShowProfileDropDown($event)
+            "
           >
             <lucide-icon
               name="id-card"
@@ -80,7 +82,9 @@
           <button
             class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left"
             [routerLink]="'/people'"
-            (click)="$event.stopPropagation()"
+            (click)="
+              $event.stopPropagation(); toggleShowProfileDropDown($event)
+            "
           >
             <lucide-icon
               name="users"
@@ -91,6 +95,9 @@
 
           <button
             class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left"
+            (click)="
+              $event.stopPropagation(); toggleShowProfileDropDown($event)
+            "
           >
             <lucide-icon
               name="shield-alert"
@@ -101,6 +108,9 @@
 
           <button
             class="flex items-center gap-3 w-full px-4 py-2 hover:bg-bg-hover transition text-left text-red-400"
+            (click)="
+              $event.stopPropagation(); toggleShowProfileDropDown($event)
+            "
           >
             <lucide-icon name="log-out" class="w-4 h-4"></lucide-icon>
             Log Out

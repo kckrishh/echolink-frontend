@@ -29,119 +29,144 @@
 <!-- MESSAGES TAB -->
 <!-- ======================= -->
 <ng-container *ngIf="activeTab === 'messages'">
-  <div
-    *ngFor="let convo of conversations$ | async"
-    (click)="openChat(convo)"
-    class="flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer transition-colors duration-150 mb-1"
-    [ngClass]="{
-      'bg-bg-hover text-text-body': convo.unreadCount > 0,
-      'text-text-muted hover:text-text-body hover:bg-bg-hover':
-        convo.unreadCount === 0
-    }"
-  >
-    <!-- Left -->
-    <div class="flex items-center gap-3 min-w-0">
-      <div
-        class="h-14 w-14 rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0"
-      >
-        <img
-          [src]="
-            'https://api.dicebear.com/9.x/adventurer/svg?seed=' +
-            convo.otherUsername
-          "
-          class="h-full w-full rounded-full"
-        />
+  <!-- List -->
+  <ng-container *ngIf="$any(conversations$ | async)?.length; else noMessages">
+    <div
+      *ngFor="let convo of conversations$ | async"
+      (click)="openChat(convo)"
+      class="flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer transition-colors duration-150 mb-1"
+      [ngClass]="{
+        'bg-bg-hover text-text-body': convo.unreadCount > 0,
+        'text-text-muted hover:text-text-body hover:bg-bg-hover':
+          convo.unreadCount === 0,
+      }"
+    >
+      <!-- (UNCHANGED convo markup) -->
+      <!-- Left -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div
+          class="h-14 w-14 rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0"
+        >
+          <img
+            [src]="convo.otherUserAvatar"
+            class="h-full w-full rounded-full"
+          />
+        </div>
+
+        <div class="flex flex-col min-w-0">
+          <span class="text-base font-semibold truncate">
+            {{ convo.otherUsername }}
+          </span>
+
+          <span
+            class="text-sm truncate"
+            [ngClass]="{
+              'font-medium text-text-body': convo.unreadCount > 0,
+              'text-text-muted': convo.unreadCount === 0,
+            }"
+          >
+            {{ convo.lastMessagePreview }}
+          </span>
+        </div>
       </div>
 
-      <div class="flex flex-col min-w-0">
-        <span class="text-base font-semibold truncate">
-          {{ convo.otherUsername }}
+      <!-- Right -->
+      <div class="flex flex-col items-end gap-1 flex-shrink-0">
+        <span
+          class="text-[0.65rem]"
+          [ngClass]="{
+            'font-semibold text-text-body': convo.unreadCount > 0,
+            'text-text-muted': convo.unreadCount === 0,
+          }"
+        >
+          {{ convo.lastMessageAt | date: "shortTime" }}
         </span>
 
         <span
-          class="text-sm truncate"
-          [ngClass]="{
-            'font-medium text-text-body': convo.unreadCount > 0,
-            'text-text-muted': convo.unreadCount === 0
-          }"
+          *ngIf="convo.unreadCount > 0"
+          class="px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-brand text-white shadow-echo"
         >
-          {{ convo.lastMessagePreview }}
+          {{ convo.unreadCount > 99 ? "99+" : convo.unreadCount }}
         </span>
       </div>
     </div>
+  </ng-container>
 
-    <!-- Right -->
-    <div class="flex flex-col items-end gap-1 flex-shrink-0">
-      <span
-        class="text-[0.65rem]"
-        [ngClass]="{
-          'font-semibold text-text-body': convo.unreadCount > 0,
-          'text-text-muted': convo.unreadCount === 0
-        }"
-      >
-        {{ convo.lastMessageAt | date : "shortTime" }}
-      </span>
-
-      <span
-        *ngIf="convo.unreadCount > 0"
-        class="px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-brand text-white shadow-echo"
-      >
-        {{ convo.unreadCount > 99 ? "99+" : convo.unreadCount }}
-      </span>
+  <!-- Empty state -->
+  <ng-template #noMessages>
+    <div class="flex flex-col items-center justify-center py-12 text-center">
+      <p class="text-text-muted text-sm">No conversations yet</p>
+      <p class="text-text-muted text-xs mt-1">
+        Start a conversation to see it here
+      </p>
     </div>
-  </div>
+  </ng-template>
 </ng-container>
 
 <!-- ======================= -->
 <!-- PENDING TAB -->
 <!-- ======================= -->
+<!-- ======================= -->
+<!-- PENDING TAB -->
+<!-- ======================= -->
 <ng-container *ngIf="activeTab === 'pending'">
-  <div
-    *ngFor="let convo of pendingConversations$ | async"
-    (click)="openChat(convo)"
-    class="flex items-center justify-between px-3 py-2 rounded-xl mb-1 bg-bg-hover cursor-pointer hover:bg-bg-hover/70 transition"
+  <!-- Pending list -->
+  <ng-container
+    *ngIf="$any(pendingConversations$ | async)?.length; else noPending"
   >
-    <!-- Left -->
-    <div class="flex items-center gap-3 min-w-0">
-      <div
-        class="h-14 w-14 rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0"
-      >
-        <img
-          [src]="
-            'https://api.dicebear.com/9.x/adventurer/svg?seed=' +
-            convo.otherUsername
-          "
-          class="h-full w-full rounded-full"
-        />
+    <div
+      *ngFor="let convo of pendingConversations$ | async"
+      (click)="openChat(convo)"
+      class="flex items-center justify-between px-3 py-2 rounded-xl mb-1 bg-bg-hover cursor-pointer hover:bg-bg-hover/70 transition"
+    >
+      <!-- Left -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div
+          class="h-14 w-14 rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0"
+        >
+          <img
+            [src]="convo.otherUserAvatar"
+            class="h-full w-full rounded-full"
+          />
+        </div>
+
+        <div class="flex flex-col min-w-0">
+          <span class="text-base font-semibold truncate text-text-body">
+            {{ convo.otherUsername }}
+          </span>
+
+          <span class="text-sm truncate text-text-muted">
+            {{ convo.lastMessagePreview }}
+          </span>
+        </div>
       </div>
 
-      <div class="flex flex-col min-w-0">
-        <span class="text-base font-semibold truncate text-text-body">
-          {{ convo.otherUsername }}
-        </span>
+      <!-- Actions -->
+      <div class="flex gap-2 flex-shrink-0">
+        <button
+          class="px-3 py-1 rounded-lg bg-brand text-white text-sm font-semibold shadow-echo"
+          (click)="acceptRequest(convo); $event.stopPropagation()"
+        >
+          Accept
+        </button>
 
-        <!-- ✅ show the request message preview -->
-        <span class="text-sm truncate text-text-muted">
-          {{ convo.lastMessagePreview }}
-        </span>
+        <button
+          class="px-3 py-1 rounded-lg bg-bg-base border border-border-base text-sm font-semibold text-text-muted hover:text-text-body"
+          (click)="ignoreRequest(convo); $event.stopPropagation()"
+        >
+          Ignore
+        </button>
       </div>
     </div>
+  </ng-container>
 
-    <!-- Actions -->
-    <div class="flex gap-2 flex-shrink-0">
-      <button
-        class="px-3 py-1 rounded-lg bg-brand text-white text-sm font-semibold shadow-echo"
-        (click)="acceptRequest(convo); $event.stopPropagation()"
-      >
-        Accept
-      </button>
-
-      <button
-        class="px-3 py-1 rounded-lg bg-bg-base border border-border-base text-sm font-semibold text-text-muted hover:text-text-body"
-        (click)="ignoreRequest(convo); $event.stopPropagation()"
-      >
-        Ignore
-      </button>
+  <!-- Empty state -->
+  <ng-template #noPending>
+    <div class="flex flex-col items-center justify-center py-12 text-center">
+      <p class="text-text-muted text-sm">No pending requests</p>
+      <p class="text-text-muted text-xs mt-1">
+        Message requests will appear here
+      </p>
     </div>
-  </div>
+  </ng-template>
 </ng-container>

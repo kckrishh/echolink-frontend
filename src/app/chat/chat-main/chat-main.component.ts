@@ -42,13 +42,15 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   protected myId = 1;
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   messageText: string = '';
+  private messageSound = new Audio('message-sound.wav');
+  isMessageSeen = false;
 
   constructor(
     private route: ActivatedRoute,
     private messageService: MessageService,
     private conversationService: ConversationService,
     private stompService: StompService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -69,15 +71,16 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     this.stompService.stompConnected$
       .pipe(
         filter((val) => val),
-        take(1)
+        take(1),
       )
       .subscribe(() => {
         this.subscribeForMessage();
+        this.subscribeForTypingIndicator();
+        this.subscribeForSeenIndicator();
       });
 
     this.authService.me$.subscribe({
       next: (res) => {
-        console.log(res);
         this.me = res;
       },
     });
@@ -124,16 +127,23 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     this.stompService.subscribe('/user/queue/messages', (message: IMessage) => {
       const payload = JSON.parse(message.body) as WsEvent<MessageDto>;
       const msg = payload.data;
+      if (msg.senderId !== this.me.id) {
+        this.messageSound.volume = 0.4;
+        this.messageSound.currentTime = 0;
+        this.messageSound.play().catch(() => {});
+      }
+
+      if (msg.senderId === this.me.id) {
+        this.isMessageSeen = false;
+      }
       if (String(msg.conversationId) === String(this.conversationId)) {
         this.messages.push(msg);
         this.messageText = '';
-        console.log(message.body);
 
         this.conversationService.markAsRead(this.conversationId).subscribe({
           next: () => this.conversationService.loadConversations().subscribe(),
         });
       }
-      console.log(message);
       if (payload.eventType === 'DM_REQUEST') {
         this.conversationService.loadPendingConversations().subscribe();
         this.conversationService.loadConversations().subscribe();
@@ -146,4 +156,60 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
   acceptRequest(clickedConvo: any) {}
   ignoreRequest(clickedConvo: any) {}
+
+  isOtherTyping = false;
+  typingTimeout: any = null;
+  hasSentTypingTrue = false;
+  onTyping() {
+    if (!this.conversationId) return;
+
+    if (!this.hasSentTypingTrue) {
+      this.hasSentTypingTrue = true;
+
+      this.stompService.publishForTypeIndicator('/app/chat.typing', {
+        conversationId: this.conversationId,
+        typing: true,
+      });
+    }
+
+    clearTimeout(this.typingTimeout);
+
+    this.typingTimeout = setTimeout(() => {
+      this.hasSentTypingTrue = false;
+      this.stompService.publishForTypeIndicator('/app/chat.typing', {
+        conversationId: this.conversationId,
+        typing: false,
+      });
+    }, 1000);
+  }
+
+  subscribeForTypingIndicator() {
+    this.stompService.subscribeForTypingIndicator(
+      '/user/queue/typing',
+      (message: IMessage) => {
+        const resp = JSON.parse(message.body);
+        console.log(resp);
+
+        if (String(resp.data.conversationId) === String(this.conversationId)) {
+          this.isOtherTyping = resp.data.typing;
+        }
+      },
+    );
+  }
+
+  subscribeForSeenIndicator() {
+    this.stompService.subscribeForSeenIndicator(
+      '/user/queue/seen',
+      (message: IMessage) => {
+        const evt = JSON.parse(message.body);
+
+        if (
+          evt.eventType === 'DM_SEEN' &&
+          String(evt.data.conversationId) === String(this.conversationId)
+        ) {
+          this.isMessageSeen = true;
+        }
+      },
+    );
+  }
 }

@@ -8,6 +8,8 @@ import { ProfilePanelService } from '../profile-panel.service';
 })
 export class PeopleComponent implements OnInit {
   friends: any[] = [];
+  requests: any[] = [];
+  blocked: any[] = [];
   currTab = 'friends';
 
   constructor(private profilePanelService: ProfilePanelService) {}

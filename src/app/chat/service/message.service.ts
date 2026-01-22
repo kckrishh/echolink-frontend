@@ -17,7 +17,7 @@ export class MessageService {
     return this.http.get(`${this.baseUrl}/${conversationId}/messages`).pipe(
       tap((res) => {
         this.messages.next(res);
-      })
+      }),
     );
   }
 

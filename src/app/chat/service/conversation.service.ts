@@ -9,11 +9,11 @@ export class ConversationService {
   constructor(private http: HttpClient) {}
   baseUrl = 'http://localhost:8080/dm';
 
-  private conversations = new BehaviorSubject<any>([]);
+  private conversations = new BehaviorSubject<[any] | []>([]);
   conversations$ = this.conversations.asObservable();
   loadConversations() {
     return this.http.get(`${this.baseUrl}/conversations`).pipe(
-      tap((res) => {
+      tap((res: any) => {
         this.conversations.next(res);
       })
     );

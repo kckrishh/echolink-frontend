@@ -40,7 +40,7 @@ export class StompService {
     this.authService.loggedIn$
       .pipe(
         filter((t): t is string => !!t),
-        take(1)
+        take(1),
       )
       .subscribe(() => {
         if (!this.client.active) this.client.activate();
@@ -53,5 +53,23 @@ export class StompService {
 
   publish(destination: string, body: any): void {
     this.client.publish({ destination, body: JSON.stringify(body) });
+  }
+
+  subscribeForTypingIndicator(
+    destination: string,
+    callback: any,
+  ): StompSubscription {
+    return this.client.subscribe(destination, callback);
+  }
+
+  publishForTypeIndicator(destination: string, body: any): void {
+    return this.client.publish({ destination, body: JSON.stringify(body) });
+  }
+
+  subscribeForSeenIndicator(
+    destination: string,
+    callback: any,
+  ): StompSubscription {
+    return this.client.subscribe(destination, callback);
   }
 }
