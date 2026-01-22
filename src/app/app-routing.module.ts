@@ -6,11 +6,6 @@ import { authGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'chat',
-    pathMatch: 'full',
-  },
-  {
     path: 'chat',
     loadChildren: () => import('./chat/chat.module').then((m) => m.ChatModule),
     canActivate: [authGuard],
@@ -29,6 +24,15 @@ const routes: Routes = [
     path: 'people',
     component: PeopleComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: '**',
+    redirectTo: 'chat',
+  },
+  {
+    path: '',
+    redirectTo: 'chat',
+    pathMatch: 'full',
   },
 ];
 
