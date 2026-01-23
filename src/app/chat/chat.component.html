@@ -1,78 +1,91 @@
+<!-- chat.component.html -->
 <div class="h-[87vh] w-full overflow-hidden flex mx-auto">
-  <!-- MAIN GRID (desktop) -->
   <section
-    class="relative h-full w-full rounded-md shadow-2xl bg-bg-panel"
+    class="h-full w-full grid rounded-md shadow-2xl"
     [ngClass]="{
-      'grid hidden md:grid-cols-[0.5fr_1.8fr]': !isGroup,
-      'grid hidden md:grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
+      'lg:grid-cols-[0.5fr_1.8fr]': !isGroup,
+      'lg:grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
     }"
   >
-    <div class="bg-bg-panel min-w-0 h-full min-h-0">
+    <!-- LEFT SIDEBAR -->
+    <!-- ✅ Visible on tablet+ (md+) | Hidden on phone -->
+    <div class="bg-bg-panel min-w-0 h-full min-h-0 hidden md:block">
       <app-sidebar-left></app-sidebar-left>
     </div>
 
+    <!-- CHAT MAIN -->
+    <!-- ✅ Always visible -->
     <div class="bg-bg-panel min-w-0 h-full min-h-0">
       <app-chat-main></app-chat-main>
     </div>
 
-    <div class="bg-bg-panel min-w-0 h-full min-h-0" *ngIf="isGroup">
+    <!-- RIGHT SIDEBAR -->
+    <!-- ✅ Only show on DESKTOP (lg+) and only if isGroup -->
+    <div
+      class="bg-bg-panel min-w-0 h-full min-h-0 hidden lg:block"
+      *ngIf="isGroup"
+    >
       <app-sidebar-right></app-sidebar-right>
     </div>
   </section>
 
-  <!-- MOBILE: show only main chat full screen -->
-  <section class="md:hidden relative h-full w-full bg-bg-panel">
-    <!-- Mobile top actions (optional but premium) -->
-    <div class="absolute top-3 left-3 z-40 flex gap-2">
-      <button
-        type="button"
-        class="h-10 w-10 rounded-xl bg-bg-hover border border-border-base flex items-center justify-center shadow-echo-md"
-        (click)="leftDrawerOpen = true"
-      >
-        <lucide-icon name="menu"></lucide-icon>
-      </button>
+  <!-- ✅ PHONE DRAWERS (only on <md) -->
+  <!-- LEFT DRAWER (animated open + close) -->
+  <div *ngIf="leftDrawerRender" class="fixed inset-0 z-50 md:hidden">
+    <!-- Backdrop -->
+    <div
+      class="absolute inset-0 bg-black/50 transition-opacity duration-200 ease-out"
+      [class.opacity-100]="leftDrawerOpen"
+      [class.opacity-0]="!leftDrawerOpen"
+      (click)="closeLeftDrawer()"
+    ></div>
 
-      <button
-        *ngIf="isGroup"
-        type="button"
-        class="h-10 w-10 rounded-xl bg-bg-hover border border-border-base flex items-center justify-center shadow-echo-md"
-        (click)="rightDrawerOpen = true"
-      >
-        <lucide-icon name="users"></lucide-icon>
-      </button>
+    <!-- Panel -->
+    <div
+      class="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-bg-panel transform transition-transform duration-250 ease-out"
+      [class.translate-x-0]="leftDrawerOpen"
+      [class.-translate-x-full]="!leftDrawerOpen"
+    >
+      <app-sidebar-left></app-sidebar-left>
     </div>
+  </div>
 
-    <!-- Chat takes full screen -->
-    <div class="h-full min-h-0">
-      <app-chat-main></app-chat-main>
+  <!-- RIGHT DRAWER (animated open + close, group only) -->
+  <div
+    *ngIf="rightDrawerRender && isGroup"
+    class="fixed inset-0 z-50 md:hidden"
+  >
+    <!-- Backdrop -->
+    <div
+      class="absolute inset-0 bg-black/50 transition-opacity duration-200 ease-out"
+      [class.opacity-100]="rightDrawerOpen"
+      [class.opacity-0]="!rightDrawerOpen"
+      (click)="closeRightDrawer()"
+    ></div>
+
+    <!-- Panel -->
+    <div
+      class="absolute right-0 top-0 h-full w-[80%] max-w-[300px] bg-bg-panel transform transition-transform duration-250 ease-out"
+      [class.translate-x-0]="rightDrawerOpen"
+      [class.translate-x-full]="!rightDrawerOpen"
+    >
+      <app-sidebar-right></app-sidebar-right>
     </div>
+  </div>
 
-    <!-- LEFT DRAWER -->
-    <div *ngIf="leftDrawerOpen" class="fixed inset-0 z-50">
-      <div
-        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        (click)="leftDrawerOpen = false"
-      ></div>
+  <!-- ✅ PHONE ONLY: tiny invisible edge taps to open drawers -->
+  <button
+    type="button"
+    class="fixed left-0 top-0 h-[87vh] w-6 opacity-0 md:hidden"
+    (click)="openLeftDrawer()"
+    aria-label="Open left sidebar"
+  ></button>
 
-      <div
-        class="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-bg-panel border-r border-border-base shadow-2xl"
-      >
-        <app-sidebar-left></app-sidebar-left>
-      </div>
-    </div>
-
-    <!-- RIGHT DRAWER (group only) -->
-    <div *ngIf="rightDrawerOpen && isGroup" class="fixed inset-0 z-50">
-      <div
-        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        (click)="rightDrawerOpen = false"
-      ></div>
-
-      <div
-        class="absolute right-0 top-0 h-full w-[80%] max-w-[300px] bg-bg-panel border-l border-border-base shadow-2xl"
-      >
-        <app-sidebar-right></app-sidebar-right>
-      </div>
-    </div>
-  </section>
+  <button
+    *ngIf="isGroup"
+    type="button"
+    class="fixed right-0 top-0 h-[87vh] w-6 opacity-0 md:hidden"
+    (click)="openRightDrawer()"
+    aria-label="Open right sidebar"
+  ></button>
 </div>
