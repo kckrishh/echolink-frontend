@@ -21,6 +21,7 @@ import {
   BadgeCheck,
   ChevronUp,
   Check,
+  Search,
 } from 'lucide-angular';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -57,6 +58,7 @@ import { RefreshInterceptor } from './auth/refresh.interceptor';
       ImagePlus,
       BadgeCheck,
       Check,
+      Search,
     }),
   ],
   providers: [

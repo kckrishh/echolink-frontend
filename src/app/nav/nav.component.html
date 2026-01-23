@@ -1,11 +1,15 @@
 <!-- navbar.component.html -->
-<section class="flex items-center h-full relative px-3 md:px-6">
+<section class="flex items-center h-14 sm:h-16 md:h-full relative px-3 md:px-6">
   <!-- LEFT (logo) -->
   <div class="flex items-center gap-2 min-w-0">
-    <img src="logo.png" class="w-12 h-12 md:w-20 md:h-20" alt="" />
+    <img
+      src="logo.png"
+      class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20"
+      alt=""
+    />
     <!-- hide text on mobile -->
     <h1
-      class="hidden md:block text-text-heading text-3xl font-bold -ml-2 tracking-widest"
+      class="hidden md:block text-text-heading text-lg sm:text-xl md:text-3xl font-bold -ml-2 tracking-widest"
     >
       ECHOLINK
     </h1>
@@ -34,27 +38,30 @@
       (click)="mobileSearchOpen = true"
       aria-label="Open search"
     >
-      <lucide-icon name="search" class="w-6 h-6"></lucide-icon>
+      <lucide-icon
+        name="search"
+        class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7"
+      ></lucide-icon>
     </button>
 
     <a href="/chat" class="p-2 md:px-7 rounded-xl hover:bg-bg-hover transition">
       <lucide-icon
         name="home"
-        class="w-6 h-6 md:w-7 md:h-7 text-white"
+        class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white"
       ></lucide-icon>
     </a>
 
     <a href="" class="p-2 md:px-7 rounded-xl hover:bg-bg-hover transition">
       <lucide-icon
         name="bell"
-        class="w-6 h-6 md:w-7 md:h-7 text-white"
+        class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white"
       ></lucide-icon>
     </a>
 
     <a href="" class="p-2 md:px-7 rounded-xl hover:bg-bg-hover transition">
       <lucide-icon
         name="settings"
-        class="w-6 h-6 md:w-7 md:h-7 text-white"
+        class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white"
       ></lucide-icon>
     </a>
 
@@ -64,14 +71,17 @@
         class="relative cursor-pointer rounded-xl hover:bg-bg-hover px-2 py-1 transition"
         (click)="toggleShowProfileDropDown($event)"
       >
-        <img [src]="me?.avatar" class="h-11 w-11 md:h-14 md:w-14 rounded-lg" />
+        <img
+          [src]="me?.avatar"
+          class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 rounded-lg"
+        />
 
         <div
           class="w-5 h-5 absolute bg-black rounded-full flex items-center justify-center top-9 md:top-11 right-1"
         >
           <lucide-icon
             name="chevron-down"
-            class="text-white w-4 h-4"
+            class="text-white w-4 h-4 md:w-5 md:h-5"
           ></lucide-icon>
         </div>
       </button>
