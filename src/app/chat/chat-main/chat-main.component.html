@@ -17,14 +17,15 @@
 <section class="flex flex-col h-full" *ngIf="clickedConvo; else emptyState">
   <!-- header  -->
   <header
-    class="flex justify-between border-b border-border-base h-[6rem] flex-shrink-0"
+    class="flex justify-between border-b border-border-base flex-shrink-0 h-14 sm:h-16 md:h-[6rem]"
   >
     <!-- header left side  -->
     <div
-      class="px-4 flex mb-4 justify-start items-center text-text-heading h-[100%]"
+      class="px-3 sm:px-4 flex justify-start items-center text-text-heading h-full gap-2 sm:gap-3"
     >
+      <!-- avatar -->
       <div
-        class="h-14 w-14 rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0"
+        class="rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14"
       >
         <img
           [src]="clickedConvo.otherUserAvatar"
@@ -32,19 +33,34 @@
         />
       </div>
 
-      <h3 class="px-2 text-[1.4rem]">{{ clickedConvo?.otherUsername }}</h3>
-      <div class="flex items-center gap-2">
-        <span
-          class="h-2.5 w-2.5 rounded-full bg-brand-active shadow-echo"
-        ></span>
-        <span class="text-text-muted text-xs">Active now</span>
+      <!-- name + status -->
+      <div class="min-w-0 flex flex-col justify-center">
+        <h3
+          class="text-base sm:text-lg md:text-[1.4rem] leading-tight truncate"
+        >
+          {{ clickedConvo?.otherUsername }}
+        </h3>
+
+        <div class="flex items-center gap-2">
+          <span
+            class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-brand-active shadow-echo"
+          ></span>
+          <span class="text-text-muted text-[0.7rem] sm:text-xs md:text-xs">
+            Active now
+          </span>
+        </div>
       </div>
     </div>
 
     <!-- header right side  -->
-    <div class="text-text-body flex items-center justify-around w-[8rem] pr-14">
-      <lucide-icon name="search"></lucide-icon>
-      <lucide-icon name="MoreHorizontal"></lucide-icon>
+    <div
+      class="text-text-body flex items-center justify-end gap-3 sm:gap-4 pr-3 sm:pr-4 md:pr-14 w-auto md:w-[8rem]"
+    >
+      <lucide-icon name="search" class="w-5 h-5 md:w-6 md:h-6"></lucide-icon>
+      <lucide-icon
+        name="MoreHorizontal"
+        class="w-5 h-5 md:w-6 md:h-6"
+      ></lucide-icon>
     </div>
   </header>
 
