@@ -11,7 +11,7 @@ import { MessageService } from '../service/message.service';
 import { ConversationService } from '../service/conversation.service';
 import { StompService } from '../../stomp.service';
 import { IMessage } from '@stomp/stompjs';
-import { filter, take } from 'rxjs';
+import { filter, take, forkJoin } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 
 type WsEvent<T> = {
@@ -56,19 +56,32 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      this.loading = true;
       this.conversationId = params['conversationId'];
-      if (this.conversationId) {
-        this.getMessages();
-        this.getClickedConvo();
+      if (!this.conversationId) return;
 
-        this.conversationService.markAsRead(this.conversationId).subscribe({
-          next: () => {
-            this.conversationService.loadConversations().subscribe();
-          },
-        });
-      }
-      this.loading = false;
+      this.loading = true;
+      forkJoin({
+        messages: this.messageService.getMessages(this.conversationId),
+        convo: this.conversationService.getSingleConversation(
+          this.conversationId,
+        ),
+      }).subscribe({
+        next: ({ messages, convo }) => {
+          this.messages = messages;
+          this.clickedConvo = convo;
+
+          this.conversationService.markAsRead(this.conversationId).subscribe({
+            next: () => {
+              this.conversationService.loadConversations().subscribe();
+            },
+          });
+          this.loading = false;
+        },
+        error: (error) => {
+          console.log(error);
+          this.loading = false;
+        },
+      });
     });
 
     this.stompService.connectWhenReady();
@@ -91,24 +104,6 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   }
   ngAfterViewChecked(): void {
     this.scrollToBottom();
-  }
-
-  getMessages() {
-    this.messageService.getMessages(this.conversationId).subscribe({
-      next: (value: any) => {
-        this.messages = value;
-      },
-    });
-  }
-
-  getClickedConvo() {
-    this.conversationService
-      .getSingleConversation(this.conversationId)
-      .subscribe({
-        next: (value: any) => {
-          this.clickedConvo = value;
-        },
-      });
   }
 
   scrollToBottom() {
