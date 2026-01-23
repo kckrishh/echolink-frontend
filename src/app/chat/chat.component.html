@@ -29,6 +29,28 @@
     </div>
   </section>
 
+  <!-- ✅ MOBILE VISIBLE TRIGGERS (premium, clean) -->
+  <!-- Left drawer trigger -->
+  <button
+    type="button"
+    class="fixed md:hidden left-3 top-[calc(6px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+    (click)="openLeftDrawer()"
+    aria-label="Open conversations"
+  >
+    <lucide-icon name="panel-left" class="w-5 h-5"></lucide-icon>
+  </button>
+
+  <!-- Right drawer trigger (group only) -->
+  <button
+    *ngIf="isGroup"
+    type="button"
+    class="fixed md:hidden right-3 top-[calc(6px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+    (click)="openRightDrawer()"
+    aria-label="Open group info"
+  >
+    <lucide-icon name="panel-right" class="w-5 h-5"></lucide-icon>
+  </button>
+
   <!-- ✅ PHONE DRAWERS (only on <md) -->
   <!-- LEFT DRAWER (animated open + close) -->
   <div *ngIf="leftDrawerRender" class="fixed inset-0 z-50 md:hidden">
@@ -73,7 +95,7 @@
     </div>
   </div>
 
-  <!-- ✅ PHONE ONLY: tiny invisible edge taps to open drawers -->
+  <!-- ✅ PHONE ONLY: tiny invisible edge taps to open drawers (optional shortcut) -->
   <button
     type="button"
     class="fixed left-0 top-0 h-[87vh] w-6 opacity-0 md:hidden"
