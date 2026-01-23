@@ -33,9 +33,10 @@
   <!-- Left drawer trigger -->
   <button
     type="button"
-    class="fixed md:hidden left-3 top-[calc(6px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+    class="fixed md:hidden left-3 top-[calc(40px+6px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
     (click)="openLeftDrawer()"
     aria-label="Open conversations"
+    *ngIf="leftDrawerOpen === false"
   >
     <lucide-icon name="panel-left" class="w-5 h-5"></lucide-icon>
   </button>
