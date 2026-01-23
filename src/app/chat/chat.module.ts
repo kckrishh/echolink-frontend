@@ -15,6 +15,8 @@ import {
   Search,
   MoreHorizontal,
   Check,
+  PanelLeft,
+  PanelRight,
 } from 'lucide-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +35,14 @@ import { FormsModule } from '@angular/forms';
     ChatRoutingModule,
     HttpClientModule,
     FormsModule,
-    LucideAngularModule.pick({ User, Search, MoreHorizontal, Check }),
+    LucideAngularModule.pick({
+      User,
+      Search,
+      MoreHorizontal,
+      Check,
+      PanelLeft,
+      PanelRight,
+    }),
   ],
 })
 export class ChatModule {}
