@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ConversationService } from '../chat/service/conversation.service';
 import { AuthService } from '../auth/auth.service';
 import { Me } from '../interfaces/me';
+import { filter, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -28,15 +29,22 @@ export class NavComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private conversationService: ConversationService,
-    protected authService: AuthService
+    protected authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    this.authService.getMe().subscribe({
-      next: (res: Me | null) => {
-        this.me = res;
-      },
-    });
+    this.authService.loggedIn$
+      .pipe(
+        filter((val) => val),
+        take(1),
+      )
+      .subscribe(() => {
+        this.authService.getMe().subscribe({
+          next: (res: Me | null) => {
+            this.me = res;
+          },
+        });
+      });
   }
 
   toggleShowProfileDropDown(event: Event) {
