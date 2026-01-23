@@ -1,12 +1,20 @@
-<section class="flex justify-around h-full relative">
-  <div class="flex w-[20%] items-center">
-    <img src="logo.png" class="w-20 h-20" alt="" srcset="" />
-    <h1 class="text-text-heading text-3xl font-bold -ml-2 tracking-widest">
+<!-- navbar.component.html -->
+<section class="flex items-center h-full relative px-3 md:px-6">
+  <!-- LEFT (logo) -->
+  <div class="flex items-center gap-2 min-w-0">
+    <img src="logo.png" class="w-12 h-12 md:w-20 md:h-20" alt="" />
+    <!-- hide text on mobile -->
+    <h1
+      class="hidden md:block text-text-heading text-3xl font-bold -ml-2 tracking-widest"
+    >
       ECHOLINK
     </h1>
   </div>
-  <div class="w-[40%] flex justify-center items-center">
-    <form class="w-full" (ngSubmit)="searchUser()">
+
+  <!-- CENTER (search) -->
+  <!-- desktop/tablet search bar -->
+  <div class="hidden md:flex flex-1 justify-center px-4">
+    <form class="w-full max-w-[42rem]" (ngSubmit)="searchUser()">
       <input
         type="text"
         [(ngModel)]="searchedUsername"
@@ -16,26 +24,50 @@
       />
     </form>
   </div>
-  <div class="flex justify-end items-center w-[30%]">
-    <a href="/chat" class="px-7 hover:text-button-primary-active">
-      <lucide-icon name="home" class="w-7 h-7 text-white"></lucide-icon>
+
+  <!-- RIGHT (icons + avatar) -->
+  <div class="flex items-center gap-2 md:gap-6 ml-auto">
+    <!-- MOBILE search trigger -->
+    <button
+      type="button"
+      class="md:hidden p-2 rounded-xl hover:bg-bg-hover transition text-white"
+      (click)="mobileSearchOpen = true"
+      aria-label="Open search"
+    >
+      <lucide-icon name="search" class="w-6 h-6"></lucide-icon>
+    </button>
+
+    <a href="/chat" class="p-2 md:px-7 rounded-xl hover:bg-bg-hover transition">
+      <lucide-icon
+        name="home"
+        class="w-6 h-6 md:w-7 md:h-7 text-white"
+      ></lucide-icon>
     </a>
-    <a href="" class="px-7">
-      <lucide-icon name="bell" class="w-7 h-7 text-white"></lucide-icon>
+
+    <a href="" class="p-2 md:px-7 rounded-xl hover:bg-bg-hover transition">
+      <lucide-icon
+        name="bell"
+        class="w-6 h-6 md:w-7 md:h-7 text-white"
+      ></lucide-icon>
     </a>
-    <a href="" class="px-7">
-      <lucide-icon name="settings" class="w-7 h-7 text-white"></lucide-icon>
+
+    <a href="" class="p-2 md:px-7 rounded-xl hover:bg-bg-hover transition">
+      <lucide-icon
+        name="settings"
+        class="w-6 h-6 md:w-7 md:h-7 text-white"
+      ></lucide-icon>
     </a>
-    <div class="relative px-7">
-      <!-- TRIGGER (avatar + chevron) -->
+
+    <!-- avatar dropdown (same logic, just responsive sizing/spacing) -->
+    <div class="relative">
       <button
         class="relative cursor-pointer rounded-xl hover:bg-bg-hover px-2 py-1 transition"
         (click)="toggleShowProfileDropDown($event)"
       >
-        <img [src]="me?.avatar" class="h-14 w-14 rounded-lg" />
+        <img [src]="me?.avatar" class="h-11 w-11 md:h-14 md:w-14 rounded-lg" />
 
         <div
-          class="w-5 h-5 absolute bg-black rounded-full flex items-center justify-center top-11"
+          class="w-5 h-5 absolute bg-black rounded-full flex items-center justify-center top-9 md:top-11 right-1"
         >
           <lucide-icon
             name="chevron-down"
@@ -44,11 +76,10 @@
         </div>
       </button>
 
-      <!-- DROPDOWN (separate from the link) -->
       <article
         *ngIf="showProfileDropDown"
         (click)="$event.stopPropagation()"
-        class="bg-bg-overlay absolute top-15 left-8 border border-border-base rounded-xl shadow-echo-md w-56 py-3 text-text-body text-sm z-50"
+        class="bg-bg-overlay absolute right-0 md:left-8 top-14 md:top-15 border border-border-base rounded-xl shadow-echo-md w-56 py-3 text-text-body text-sm z-50"
       >
         <div
           class="flex items-center gap-3 px-4 py-2 border-b border-border-base"
@@ -57,7 +88,7 @@
             [src]="me?.avatar"
             class="h-12 w-12 rounded-lg border border-border-base"
           />
-          <div>
+          <div class="min-w-0">
             <h2 class="font-semibold text-lg text-text-heading truncate">
               {{ username }}
             </h2>
@@ -120,15 +151,56 @@
     </div>
   </div>
 
+  <!-- MOBILE SEARCH OVERLAY (premium, clean) -->
+  <div *ngIf="mobileSearchOpen" class="fixed inset-0 z-50 md:hidden">
+    <div
+      class="absolute inset-0 bg-bg-base/80 backdrop-blur-sm"
+      (click)="mobileSearchOpen = false"
+    ></div>
+
+    <div class="absolute left-0 right-0 top-0 p-3">
+      <div
+        class="bg-bg-panel border border-border-base rounded-2xl shadow-echo-md p-3 flex items-center gap-2"
+      >
+        <lucide-icon
+          name="search"
+          class="w-5 h-5 text-text-muted"
+        ></lucide-icon>
+
+        <form
+          class="flex-1"
+          (ngSubmit)="searchUser(); mobileSearchOpen = false"
+        >
+          <input
+            type="text"
+            [(ngModel)]="searchedUsername"
+            placeholder="Search users or groups"
+            name="search"
+            autofocus
+            class="w-full h-10 rounded-2xl bg-input-bg border border-input-border text-text-body placeholder:text-input-placeholder px-4 outline-none hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus transition duration-150 ease-out"
+          />
+        </form>
+
+        <button
+          type="button"
+          class="p-2 rounded-xl hover:bg-bg-hover transition text-text-muted"
+          (click)="mobileSearchOpen = false"
+          aria-label="Close search"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- your existing searchedResult modal stays the same -->
   <div
     *ngIf="searchedResult"
     class="fixed inset-0 bg-bg-base/80 backdrop-blur-sm flex items-center justify-center z-40"
   >
-    <!-- MODAL CONTAINER -->
     <div
-      class="bg-bg-overlay border border-border-base rounded-2xl shadow-echo-md w-[30rem] px-6 py-5 flex flex-col gap-5"
+      class="bg-bg-overlay border border-border-base rounded-2xl shadow-echo-md w-[30rem] max-w-[92vw] px-6 py-5 flex flex-col gap-5"
     >
-      <!-- HEADER -->
       <div class="flex justify-between items-center">
         <h2 class="text-text-heading font-semibold text-lg tracking-wide">
           User Found
@@ -141,7 +213,6 @@
         </button>
       </div>
 
-      <!-- USER CARD -->
       <div
         class="flex items-center gap-4 p-4 bg-bg-panel rounded-xl border border-border-base"
       >
@@ -153,8 +224,8 @@
           class="h-14 w-14 rounded-xl border border-border-base"
         />
 
-        <div class="flex flex-col">
-          <span class="text-text-heading font-semibold text-base">
+        <div class="flex flex-col min-w-0">
+          <span class="text-text-heading font-semibold text-base truncate">
             {{ searchedResult.username }}
           </span>
 
@@ -164,7 +235,6 @@
         </div>
       </div>
 
-      <!-- BUTTONS -->
       <div class="flex justify-end gap-3">
         <button
           (click)="searchedResult = null"

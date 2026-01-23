@@ -23,6 +23,7 @@ export class NavComponent implements OnInit {
   username: string = '';
   showProfileDropDown: boolean = false;
   me: Me | null = null;
+  mobileSearchOpen = false;
 
   constructor(
     private searchUserService: SearchUserService,
