@@ -1,19 +1,78 @@
 <div class="h-[87vh] w-full overflow-hidden flex mx-auto">
+  <!-- MAIN GRID (desktop) -->
   <section
-    class="h-full w-full grid rounded-md shadow-2xl"
+    class="relative h-full w-full rounded-md shadow-2xl bg-bg-panel"
     [ngClass]="{
-      'grid-cols-[0.5fr_1.8fr]': !isGroup,
-      'grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
+      'grid hidden md:grid-cols-[0.5fr_1.8fr]': !isGroup,
+      'grid hidden md:grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
     }"
   >
     <div class="bg-bg-panel min-w-0 h-full min-h-0">
       <app-sidebar-left></app-sidebar-left>
     </div>
+
     <div class="bg-bg-panel min-w-0 h-full min-h-0">
       <app-chat-main></app-chat-main>
     </div>
+
     <div class="bg-bg-panel min-w-0 h-full min-h-0" *ngIf="isGroup">
       <app-sidebar-right></app-sidebar-right>
+    </div>
+  </section>
+
+  <!-- MOBILE: show only main chat full screen -->
+  <section class="md:hidden relative h-full w-full bg-bg-panel">
+    <!-- Mobile top actions (optional but premium) -->
+    <div class="absolute top-3 left-3 z-40 flex gap-2">
+      <button
+        type="button"
+        class="h-10 w-10 rounded-xl bg-bg-hover border border-border-base flex items-center justify-center shadow-echo-md"
+        (click)="leftDrawerOpen = true"
+      >
+        <lucide-icon name="menu"></lucide-icon>
+      </button>
+
+      <button
+        *ngIf="isGroup"
+        type="button"
+        class="h-10 w-10 rounded-xl bg-bg-hover border border-border-base flex items-center justify-center shadow-echo-md"
+        (click)="rightDrawerOpen = true"
+      >
+        <lucide-icon name="users"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Chat takes full screen -->
+    <div class="h-full min-h-0">
+      <app-chat-main></app-chat-main>
+    </div>
+
+    <!-- LEFT DRAWER -->
+    <div *ngIf="leftDrawerOpen" class="fixed inset-0 z-50">
+      <div
+        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        (click)="leftDrawerOpen = false"
+      ></div>
+
+      <div
+        class="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-bg-panel border-r border-border-base shadow-2xl"
+      >
+        <app-sidebar-left></app-sidebar-left>
+      </div>
+    </div>
+
+    <!-- RIGHT DRAWER (group only) -->
+    <div *ngIf="rightDrawerOpen && isGroup" class="fixed inset-0 z-50">
+      <div
+        class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        (click)="rightDrawerOpen = false"
+      ></div>
+
+      <div
+        class="absolute right-0 top-0 h-full w-[80%] max-w-[300px] bg-bg-panel border-l border-border-base shadow-2xl"
+      >
+        <app-sidebar-right></app-sidebar-right>
+      </div>
     </div>
   </section>
 </div>

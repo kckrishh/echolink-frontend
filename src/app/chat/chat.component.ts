@@ -8,4 +8,6 @@ import { MessageService } from './service/message.service';
 })
 export class ChatComponent {
   isGroup = false;
+  leftDrawerOpen = false;
+  rightDrawerOpen = false;
 }
