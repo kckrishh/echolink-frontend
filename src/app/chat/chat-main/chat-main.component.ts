@@ -44,7 +44,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   messageText: string = '';
   private messageSound = new Audio('message-sound.wav');
   isMessageSeen = false;
-  loading = true;
+  loading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +56,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
+      this.loading = true;
       this.conversationId = params['conversationId'];
       if (this.conversationId) {
         this.getMessages();
@@ -67,7 +68,9 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
           },
         });
       }
+      this.loading = false;
     });
+
     this.stompService.connectWhenReady();
     this.stompService.stompConnected$
       .pipe(
