@@ -44,6 +44,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   messageText: string = '';
   private messageSound = new Audio('message-sound.wav');
   isMessageSeen = false;
+  loading = true;
 
   constructor(
     private route: ActivatedRoute,

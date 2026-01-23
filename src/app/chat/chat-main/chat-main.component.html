@@ -1,3 +1,19 @@
+<div
+  *ngIf="loading"
+  class="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+>
+  <div class="flex flex-col items-center gap-4 select-none">
+    <!-- Minimal animated bar -->
+    <div class="relative w-40 h-[2px] overflow-hidden bg-white/10 rounded-full">
+      <span
+        class="absolute inset-y-0 left-0 w-1/3 bg-white/70 rounded-full animate-loading-bar"
+      ></span>
+    </div>
+
+    <!-- Subtle brand dot (optional but classy) -->
+    <span class="text-xs tracking-[0.3em] text-white/50"> ECHOLINK </span>
+  </div>
+</div>
 <section class="flex flex-col h-full" *ngIf="clickedConvo; else emptyState">
   <!-- header  -->
   <header

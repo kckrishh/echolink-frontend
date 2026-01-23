@@ -115,6 +115,16 @@ module.exports = {
         xl: "18px",
         "2xl": "22px",
       },
+
+      keyframes: {
+        "loading-bar": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(300%)" },
+        },
+      },
+      animation: {
+        "loading-bar": "loading-bar 1.2s ease-in-out infinite",
+      },
     },
   },
   plugins: [],
