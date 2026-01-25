@@ -3,29 +3,39 @@
   class="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
 >
   <div class="flex flex-col items-center gap-4 select-none">
-    <!-- Minimal animated bar -->
     <div class="relative w-40 h-[2px] overflow-hidden bg-white/10 rounded-full">
       <span
         class="absolute inset-y-0 left-0 w-1/3 bg-white/70 rounded-full animate-loading-bar"
       ></span>
     </div>
 
-    <!-- Subtle brand dot (optional but classy) -->
     <span class="text-xs tracking-[0.3em] text-white/50"> ECHOLINK </span>
   </div>
 </div>
-<section class="flex flex-col h-full" *ngIf="clickedConvo; else emptyState">
-  <!-- header  -->
+
+<section
+  *ngIf="clickedConvo; else emptyState"
+  class="flex flex-col h-[100dvh] min-h-0 bg-bg-panel"
+>
+  <!-- header -->
   <header
-    class="flex justify-between border-b border-border-base flex-shrink-0 h-14 sm:h-16 md:h-[6rem]"
+    class="flex justify-between border-b border-border-base shrink-0 h-14 sm:h-16 md:h-[6rem]"
   >
-    <!-- header left side  -->
-    <button *ngIf="isMobile" class="mr-2 text-text-muted" (click)="goBack()">
-      <lucide-icon name="arrow-left"></lucide-icon>
-    </button>
+    <!-- header left side -->
     <div
-      class="px-3 sm:px-4 flex justify-start items-center text-text-heading h-full gap-2 sm:gap-3"
+      class="px-3 sm:px-4 flex justify-start items-center text-text-heading h-full gap-2 sm:gap-3 min-w-0"
     >
+      <!-- ✅ back always near avatar (mobile only) -->
+      <button
+        *ngIf="isMobile"
+        type="button"
+        class="mr-1 -ml-1 p-2 rounded-xl text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+        (click)="goBack()"
+        aria-label="Back"
+      >
+        <lucide-icon name="arrow-left" class="w-5 h-5"></lucide-icon>
+      </button>
+
       <!-- avatar -->
       <div
         class="rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14"
@@ -55,9 +65,9 @@
       </div>
     </div>
 
-    <!-- header right side  -->
+    <!-- header right side -->
     <div
-      class="text-text-body flex items-center justify-end gap-3 sm:gap-4 pr-3 sm:pr-4 md:pr-14 w-auto md:w-[8rem]"
+      class="text-text-body flex items-center justify-end gap-3 sm:gap-4 pr-3 sm:pr-4 md:pr-14 w-auto md:w-[8rem] shrink-0"
     >
       <lucide-icon name="search" class="w-5 h-5 md:w-6 md:h-6"></lucide-icon>
       <lucide-icon
@@ -67,11 +77,10 @@
     </div>
   </header>
 
-  <!-- message area  -->
-  <div class="h-full overflow-y-auto px-4 py-2" #messageContainer>
+  <!-- ✅ messages area (ONLY scroll area) -->
+  <div class="flex-1 min-h-0 overflow-y-auto px-4 py-2" #messageContainer>
     <div class="flex flex-col min-h-full gap-3 justify-end">
       <div *ngFor="let message of messages; let last = last" class="w-full">
-        <!-- Row alignment -->
         <div
           class="flex w-full"
           [ngClass]="{
@@ -79,7 +88,6 @@
             'justify-start': message.senderId !== me.id,
           }"
         >
-          <!-- Avatar + bubble -->
           <div
             class="flex items-end gap-2 max-w-[85%]"
             [ngClass]="{
@@ -87,7 +95,6 @@
               'flex-row-reverse': message.senderId === me.id,
             }"
           >
-            <!-- ✅ Avatar only for OTHER user's messages -->
             <div
               *ngIf="message.senderId !== me.id"
               class="h-8 w-8 rounded-full overflow-hidden border border-border-base flex-shrink-0"
@@ -99,7 +106,6 @@
               />
             </div>
 
-            <!-- Bubble + time -->
             <div
               class="flex flex-col"
               [ngClass]="{
@@ -120,6 +126,7 @@
               >
                 {{ message.content }}
               </div>
+
               <div
                 *ngIf="last && message.senderId === me.id"
                 class="mt-1 flex justify-end"
@@ -130,9 +137,7 @@
                     isMessageSeen ? 'text-brand-active' : 'text-text-muted'
                   "
                 >
-                  <!-- check icon -->
                   <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
-
                   {{ isMessageSeen ? "Seen" : "Sent" }}
                 </span>
               </div>
@@ -142,7 +147,7 @@
       </div>
     </div>
 
-    <!-- ✅ Message request actions (Accept / Reject) while chat is open -->
+    <!-- Message request actions -->
     <div class="text-center my-3" *ngIf="clickedConvo?.status === 'PENDING'">
       <span
         class="block text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
@@ -178,16 +183,15 @@
       </span>
     </div>
   </div>
-  <!-- Typing indicator (3 dots) -->
-  <div class="px-4 pb-2" *ngIf="isOtherTyping">
+
+  <!-- ✅ typing indicator (fixed, not inside scroll) -->
+  <div class="px-4 pb-2 shrink-0" *ngIf="isOtherTyping">
     <div class="flex items-center gap-2">
-      <!-- avatar (optional) -->
       <img
         [src]="clickedConvo?.otherUserAvatar"
         class="h-6 w-6 rounded-full border border-border-base"
       />
 
-      <!-- bubble -->
       <div
         class="px-3 py-2 mt-3 rounded-2xl bg-bg-hover border border-border-base shadow-echo-md"
       >
@@ -200,8 +204,10 @@
     </div>
   </div>
 
-  <!-- chat textbox  -->
-  <div class="px-4 py-3 border-t border-border-base">
+  <!-- ✅ composer fixed to bottom -->
+  <div
+    class="px-4 py-3 border-t border-border-base shrink-0 bg-bg-panel pb-[calc(env(safe-area-inset-bottom)+0.75rem)]"
+  >
     <form (ngSubmit)="sendMessage()">
       <input
         type="text"
@@ -216,7 +222,7 @@
 </section>
 
 <ng-template #emptyState>
-  <section class="flex flex-col h-full items-center justify-center">
+  <section class="flex flex-col h-[100dvh] min-h-0 items-center justify-center">
     <div class="flex flex-col items-center gap-4">
       <div
         class="h-24 w-24 rounded-2xl bg-input-bg border border-border-base flex items-center justify-center shadow-echo-md"
