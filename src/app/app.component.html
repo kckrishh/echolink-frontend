@@ -1,13 +1,11 @@
-<div class="flex flex-col h-screen md:block">
-  <nav
-    *ngIf="showNavbar"
-    class="h-[4rem] md:h-[5rem] px-4 sm:px-12 md:px-28 border-border-base border-y-2 w-full shrink-0"
-  >
-    <app-nav></app-nav>
-  </nav>
-  <div class="flex-1 min-h-0 md:h-[85vh] w-[95vw] m-auto">
-    <div class="h-full w-full">
-      <router-outlet></router-outlet>
-    </div>
+<nav
+  *ngIf="showNavbar"
+  class="h-[4rem] md:h-[5rem] px-4 sm:px-12 md:px-28 border-border-base border-y-2 w-full"
+>
+  <app-nav></app-nav>
+</nav>
+<div class="h-[70vh] md:h-[85vh] w-[95vw] m-auto">
+  <div class="h-full w-full">
+    <router-outlet></router-outlet>
   </div>
 </div>
