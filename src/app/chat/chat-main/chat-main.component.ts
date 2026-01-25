@@ -45,6 +45,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   private messageSound = new Audio('message-sound.wav');
   isMessageSeen = false;
   loading = false;
+  isMobile!: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -223,7 +224,6 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  isMobile = false;
   goBack() {
     this.conversationService.backToList();
   }
