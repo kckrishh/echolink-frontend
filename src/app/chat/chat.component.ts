@@ -1,6 +1,6 @@
 // chat.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { ConversationService } from './service/conversation.service';
 
@@ -15,26 +15,17 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   mobileView: 'list' | 'chat' = 'list';
 
-  // open state (controls translate/opacity classes)
-  leftDrawerOpen = false;
-  rightDrawerOpen = false;
-
-  // render state (keeps DOM alive long enough to animate out)
-  leftDrawerRender = false;
-  rightDrawerRender = false;
-
-  private navSub: Subscription;
+  private navSub!: Subscription;
+  private viewSub!: Subscription;
 
   constructor(
     private router: Router,
     private conversationService: ConversationService,
+    private route: ActivatedRoute,
   ) {
     // ✅ closes drawers when you navigate (ex: clicking a convo)
-    this.navSub = this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => this.conversationService.enterChatOnMobile());
 
-    this.conversationService.mobileView$.subscribe((view) => {
+    this.viewSub = this.conversationService.mobileView$.subscribe((view) => {
       this.mobileView = view;
     });
   }
@@ -45,9 +36,38 @@ export class ChatComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 768;
     });
+
+    if (this.isMobile) {
+      this.conversationService.enterChatOnMobile();
+    }
+
+    this.navSub = this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        if (!this.isMobile) this.conversationService.enterChatOnMobile();
+
+        const conversationId = this.findConversationId(this.route);
+
+        if (conversationId) {
+          this.conversationService.enterChatOnMobile(); // show chat
+        } else {
+          this.conversationService.backToList(); // show list
+        }
+      });
+  }
+
+  private findConversationId(route: ActivatedRoute): string | null {
+    let r: ActivatedRoute | null = route;
+    while (r) {
+      const id = r.snapshot.queryParamMap.get('conversationId');
+      if (id) return id;
+      r = r.firstChild;
+    }
+    return null;
   }
 
   ngOnDestroy(): void {
     this.navSub.unsubscribe();
+    this.viewSub.unsubscribe();
   }
 }
