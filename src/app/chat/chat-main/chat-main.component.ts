@@ -114,8 +114,13 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
   scrollToBottom() {
     if (this.messageContainer?.nativeElement) {
-      this.messageContainer.nativeElement.scrollTop =
-        this.messageContainer.nativeElement.scrollHeight;
+      if (!this.isMobile) {
+        this.messageContainer.nativeElement.scrollTop =
+          this.messageContainer.nativeElement.scrollHeight;
+      } else {
+        this.messageContainer.nativeElement.scrollTop =
+          this.messageContainer.nativeElement.scrollHeight + 30;
+      }
     }
   }
 
