@@ -6,7 +6,7 @@ import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'https://echolink-backend.onrender.com/auth';
+  private baseUrl = 'https://api.echolink.live/auth';
 
   private accessToken: string | null = null;
   private loggedIn = new BehaviorSubject<any>(undefined);

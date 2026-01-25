@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SearchUserService {
-  private baseUrl = 'https://echolink-backend.onrender.com/people';
+  private baseUrl = 'https://api.echolink.live/people';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { BehaviorSubject, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class MessageService {
-  baseUrl = 'https://echolink-backend.onrender.com/dm';
+  baseUrl = 'https://api.echolink.live/dm';
 
   constructor(private http: HttpClient) {}
 

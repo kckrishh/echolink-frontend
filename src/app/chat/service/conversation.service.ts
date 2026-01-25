@@ -7,7 +7,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 })
 export class ConversationService {
   constructor(private http: HttpClient) {}
-  baseUrl = 'https://echolink-backend.onrender.com/dm';
+  baseUrl = 'https://api.echolink.live/dm';
 
   private conversations = new BehaviorSubject<[any] | []>([]);
   conversations$ = this.conversations.asObservable();

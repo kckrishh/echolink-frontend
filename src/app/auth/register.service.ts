@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class RegisterService {
-  private baseUrl: string = 'https://echolink-backend.onrender.com/auth';
+  private baseUrl: string = 'https://api.echolink.live/auth';
   constructor(private http: HttpClient) {}
 
   registerStart(email: string, password: string) {
