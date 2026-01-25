@@ -3,125 +3,52 @@
   <section
     class="h-full w-full grid rounded-md shadow-2xl"
     [ngClass]="{
-      'lg:grid-cols-[0.5fr_1.8fr]': !isGroup,
-      'lg:grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
+      'md:grid-cols-[0.5fr_1.8fr]': !isGroup,
+      'md:grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
       'grid-cols-1': isMobile,
     }"
   >
-    <!-- ✅ MOBILE: Conversation list takes full screen until a chat is opened -->
-    <!-- LEFT SIDEBAR -->
-    <div
-      class="bg-bg-panel min-w-0 h-full min-h-0"
-      [ngClass]="{
-        'hidden md:block': true,
-        'block md:hidden': isMobile && mobileView === 'list',
-        hidden: isMobile && mobileView === 'chat',
-      }"
-    >
+    <!-- ✅ DESKTOP/TABLET (md+): normal layout -->
+    <div class="bg-bg-panel min-w-0 h-full min-h-0 hidden md:block">
       <app-sidebar-left></app-sidebar-left>
     </div>
 
-    <!-- CHAT MAIN -->
-    <div
-      class="bg-bg-panel min-w-0 h-full min-h-0"
-      *ngIf="!isMobile || mobileView === 'chat'"
-    >
+    <div class="bg-bg-panel min-w-0 h-full min-h-0 hidden md:block">
       <app-chat-main></app-chat-main>
     </div>
 
-    <!-- RIGHT SIDEBAR -->
-    <!-- ✅ Desktop only (unchanged) -->
     <div
       class="bg-bg-panel min-w-0 h-full min-h-0 hidden lg:block"
-      *ngIf="isGroup && !isMobile"
+      *ngIf="isGroup"
     >
       <app-sidebar-right></app-sidebar-right>
     </div>
-  </section>
 
-  <!-- ✅ MOBILE TRIGGERS / DRAWERS -->
-  <!-- If you're doing "list -> chat" fullscreen on mobile, you usually DON'T need the left drawer.
-       So: show left drawer trigger only when you're in chat view (optional). -->
-  <button
-    type="button"
-    class="fixed md:hidden left-1 top-[calc(44px+6px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
-    (click)="openLeftDrawer()"
-    aria-label="Open conversations"
-    *ngIf="isMobile && mobileView === 'chat' && leftDrawerOpen === false"
-  >
-    <lucide-icon name="panel-left" class="w-5 h-5"></lucide-icon>
-  </button>
-
-  <!-- Right drawer trigger (group only) -->
-  <button
-    *ngIf="isGroup && isMobile"
-    type="button"
-    class="fixed md:hidden right-3 top-[calc(6px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
-    (click)="openRightDrawer()"
-    aria-label="Open group info"
-  >
-    <lucide-icon name="panel-right" class="w-5 h-5"></lucide-icon>
-  </button>
-
-  <!-- ✅ PHONE DRAWERS (only on <md) -->
-  <!-- LEFT DRAWER (optional now — only useful when you're in chat view) -->
-  <div *ngIf="leftDrawerRender" class="fixed inset-0 z-50 md:hidden">
-    <!-- Backdrop -->
+    <!-- ✅ MOBILE (<md): FULL SCREEN switch between LIST and CHAT -->
+    <!-- LIST (full screen) -->
     <div
-      class="absolute inset-0 bg-black/50 transition-opacity duration-200 ease-out"
-      [class.opacity-100]="leftDrawerOpen"
-      [class.opacity-0]="!leftDrawerOpen"
-      (click)="closeLeftDrawer()"
-    ></div>
-
-    <!-- Panel -->
-    <div
-      class="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-bg-panel transform transition-transform duration-250 ease-out"
-      [class.translate-x-0]="leftDrawerOpen"
-      [class.-translate-x-full]="!leftDrawerOpen"
+      class="bg-bg-panel min-w-0 h-full min-h-0 md:hidden"
+      *ngIf="isMobile && mobileView === 'list'"
     >
       <app-sidebar-left></app-sidebar-left>
     </div>
-  </div>
 
-  <!-- RIGHT DRAWER (animated open + close, group only) -->
-  <div
-    *ngIf="rightDrawerRender && isGroup"
-    class="fixed inset-0 z-50 md:hidden"
-  >
-    <!-- Backdrop -->
+    <!-- CHAT (full screen) -->
     <div
-      class="absolute inset-0 bg-black/50 transition-opacity duration-200 ease-out"
-      [class.opacity-100]="rightDrawerOpen"
-      [class.opacity-0]="!rightDrawerOpen"
-      (click)="closeRightDrawer()"
-    ></div>
-
-    <!-- Panel -->
-    <div
-      class="absolute right-0 top-0 h-full w-[80%] max-w-[300px] bg-bg-panel transform transition-transform duration-250 ease-out"
-      [class.translate-x-0]="rightDrawerOpen"
-      [class.translate-x-full]="!rightDrawerOpen"
+      class="bg-bg-panel min-w-0 h-full min-h-0 md:hidden"
+      *ngIf="isMobile && mobileView === 'chat'"
     >
-      <app-sidebar-right></app-sidebar-right>
+      <!-- Back button overlay (top-left) -->
+      <button
+        type="button"
+        class="fixed md:hidden left-3 top-[calc(10px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+        (click)="mobileView = 'list'"
+        aria-label="Back to conversations"
+      >
+        <lucide-icon name="chevron-left" class="w-5 h-5"></lucide-icon>
+      </button>
+
+      <app-chat-main></app-chat-main>
     </div>
-  </div>
-
-  <!-- ✅ PHONE ONLY: tiny invisible edge taps (optional) -->
-  <!-- Left edge opens drawer ONLY when in chat view -->
-  <button
-    type="button"
-    class="fixed left-0 top-0 h-[87vh] w-6 opacity-0 md:hidden"
-    (click)="openLeftDrawer()"
-    aria-label="Open left sidebar"
-    *ngIf="isMobile && mobileView === 'chat'"
-  ></button>
-
-  <button
-    *ngIf="isGroup && isMobile"
-    type="button"
-    class="fixed right-0 top-0 h-[87vh] w-6 opacity-0 md:hidden"
-    (click)="openRightDrawer()"
-    aria-label="Open right sidebar"
-  ></button>
+  </section>
 </div>

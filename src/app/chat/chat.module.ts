@@ -17,6 +17,7 @@ import {
   Check,
   PanelLeft,
   PanelRight,
+  ArrowLeft,
 } from 'lucide-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +43,7 @@ import { FormsModule } from '@angular/forms';
       Check,
       PanelLeft,
       PanelRight,
+      ArrowLeft,
     }),
   ],
 })
