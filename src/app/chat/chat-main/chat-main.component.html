@@ -20,6 +20,9 @@
     class="flex justify-between border-b border-border-base flex-shrink-0 h-14 sm:h-16 md:h-[6rem]"
   >
     <!-- header left side  -->
+    <button *ngIf="isMobile" class="mr-2 text-text-muted" (click)="goBack()">
+      <lucide-icon name="arrow-left"></lucide-icon>
+    </button>
     <div
       class="px-3 sm:px-4 flex justify-start items-center text-text-heading h-full gap-2 sm:gap-3"
     >

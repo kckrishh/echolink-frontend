@@ -44,4 +44,13 @@ export class ConversationService {
   markAsRead(conversationId: any) {
     return this.http.post(`${this.baseUrl}/${conversationId}/read`, {});
   }
+
+  private mobileView = new BehaviorSubject<'list' | 'chat'>('list');
+  mobileView$ = this.mobileView.asObservable();
+  enterChatOnMobile() {
+    this.mobileView.next('chat');
+  }
+  backToList() {
+    this.mobileView.next('list');
+  }
 }

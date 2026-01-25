@@ -14,7 +14,7 @@ export class DmComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private conversationService: ConversationService
+    private conversationService: ConversationService,
   ) {}
 
   ngOnInit(): void {
@@ -25,11 +25,11 @@ export class DmComponent implements OnInit {
   }
 
   openChat(convo: any) {
-    console.log(convo);
     this.conversationService.sendConvo(convo);
     this.router.navigate(['/chat/dm'], {
       queryParams: { conversationId: convo.conversationId },
     });
+    this.conversationService.enterChatOnMobile();
   }
 
   getConversations() {

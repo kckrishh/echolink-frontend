@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class SidebarLeftComponent {
   // constructor(private chatService: Conversati){}
+  opeChat(convo: any) {}
 }

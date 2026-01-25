@@ -55,6 +55,12 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit() {
+    this.isMobile = window.innerWidth < 768;
+
+    window.addEventListener('resize', () => {
+      this.isMobile = window.innerWidth < 768;
+    });
+
     this.route.queryParams.subscribe((params) => {
       this.conversationId = params['conversationId'];
       if (!this.conversationId) return;
@@ -210,5 +216,10 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
         }
       },
     );
+  }
+
+  isMobile = false;
+  goBack() {
+    this.conversationService.backToList();
   }
 }
