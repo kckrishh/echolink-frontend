@@ -45,7 +45,6 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   private messageSound = new Audio('message-sound.wav');
   isMessageSeen = false;
   loading = false;
-  isMobile!: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -115,13 +114,8 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
   scrollToBottom() {
     if (this.messageContainer?.nativeElement) {
-      if (!this.isMobile) {
-        this.messageContainer.nativeElement.scrollTop =
-          this.messageContainer.nativeElement.scrollHeight;
-      } else {
-        this.messageContainer.nativeElement.scrollTop =
-          this.messageContainer.nativeElement.scrollHeight + 30;
-      }
+      this.messageContainer.nativeElement.scrollTop =
+        this.messageContainer.nativeElement.scrollHeight;
     }
   }
 
@@ -223,6 +217,8 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
       },
     );
   }
+
+  isMobile!: boolean;
 
   goBack() {
     this.conversationService.backToList();
