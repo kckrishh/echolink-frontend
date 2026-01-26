@@ -23,8 +23,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     private conversationService: ConversationService,
     private route: ActivatedRoute,
   ) {
-    // ✅ closes drawers when you navigate (ex: clicking a convo)
-
     this.viewSub = this.conversationService.mobileView$.subscribe((view) => {
       this.mobileView = view;
     });
@@ -37,11 +35,15 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.isMobile = window.innerWidth < 768;
     });
 
-    if (this.router.url.includes('dm') && this.isMobile) {
-      this.conversationService.backToList();
-    } else {
-      this.conversationService.enterChatOnMobile;
-    }
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (this.router.url.includes('dm') && this.isMobile) {
+          this.conversationService.backToList();
+        } else {
+          this.conversationService.enterChatOnMobile;
+        }
+      });
   }
 
   ngOnDestroy(): void {
