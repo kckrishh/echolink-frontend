@@ -75,4 +75,8 @@ export class StompService {
   subscribeForReaction(destination: string, callback: any): StompSubscription {
     return this.client.subscribe(destination, callback);
   }
+
+  publicForReactio(destination: string, body: any): void {
+    return this.client.publish({ destination, body: JSON.stringify(body) });
+  }
 }

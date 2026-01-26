@@ -268,9 +268,8 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     };
 
     // send to backend
-    this.stompService.publish('/app/chat.reaction', payload);
+    this.stompService.publicForReactio('/app/chat.reaction', payload);
   }
-
   subscribeForReaction() {
     this.stompService.subscribeForReaction(
       '/user/queue/reaction',
