@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
+import { MessageDto } from '../../interfaces/MessageDto';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +15,13 @@ export class MessageService {
   messages$ = this.messages.asObservable();
 
   getMessages(conversationId: any) {
-    return this.http.get(`${this.baseUrl}/${conversationId}/messages`).pipe(
-      tap((res) => {
-        this.messages.next(res);
-      }),
-    );
+    return this.http
+      .get<MessageDto[]>(`${this.baseUrl}/${conversationId}/messages`)
+      .pipe(
+        tap((res) => {
+          this.messages.next(res);
+        }),
+      );
   }
 
   sendMessage(messageRequest: any) {

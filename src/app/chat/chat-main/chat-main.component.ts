@@ -13,21 +13,14 @@ import { StompService } from '../../stomp.service';
 import { IMessage } from '@stomp/stompjs';
 import { filter, take, forkJoin } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
+import { MessageDto } from '../../interfaces/MessageDto';
 
 type WsEvent<T> = {
   eventType: 'DM_MESSAGE' | 'DM_REQUEST';
   data: T;
 };
 
-type MessageDto = {
-  messageId: number;
-  conversationId: number;
-  content: string;
-  senderId: number;
-  senderUsername: string;
-  senderAvatar: string;
-  createdAt?: string;
-};
+type ReactionType = 'LIKE' | 'LAUGH' | 'SAD' | 'ANGRY' | 'FIRE';
 
 @Component({
   selector: 'app-chat-main',
@@ -36,7 +29,7 @@ type MessageDto = {
 })
 export class ChatMainComponent implements OnInit, AfterViewChecked {
   protected conversationId: String | null = null;
-  protected messages: any = null;
+  protected messages!: MessageDto[];
   protected clickedConvo: any = null;
   protected me: any;
   protected myId = 1;
@@ -222,5 +215,101 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
   goBack() {
     this.conversationService.backToList();
+  }
+
+  activeReactionMessageId: number | null = null;
+  private pressTimer: any = null;
+
+  reactionEmoji(type: ReactionType | null): string {
+    switch (type) {
+      case 'LIKE':
+        return '👍';
+      case 'LAUGH':
+        return '😂';
+      case 'SAD':
+        return '😢';
+      case 'ANGRY':
+        return '😡';
+      case 'FIRE':
+        return '🔥';
+      default:
+        return '';
+    }
+  }
+
+  openReactionPicker(message: MessageDto, event: MouseEvent) {
+    event.stopPropagation();
+    this.activeReactionMessageId = message.messageId;
+  }
+
+  onMsgPressStart(message: MessageDto) {
+    // long press only on mobile
+    if (!this.isMobile) return;
+
+    this.pressTimer = setTimeout(() => {
+      this.activeReactionMessageId = message.messageId;
+    }, 420); // tweak 350-500ms
+  }
+
+  onMsgPressEnd() {
+    if (this.pressTimer) clearTimeout(this.pressTimer);
+    this.pressTimer = null;
+  }
+
+  react(message: MessageDto, type: ReactionType) {
+    // close picker instantly
+    this.activeReactionMessageId = null;
+
+    const payload = {
+      messageId: message.messageId,
+      type: type,
+    };
+
+    // send to backend
+    this.stompService.publish('/app/chat.reaction', payload);
+  }
+
+  subscribeForReaction() {
+    this.stompService.subscribeForReaction(
+      '/user/queue/reaction',
+      (message: IMessage) => {
+        const evt = JSON.parse(message.body);
+
+        if (
+          evt.eventType === 'DM_REACTION' &&
+          String(evt.conversationId) === String(this.conversationId)
+        ) {
+          const msgIndex = this.messages.findIndex(
+            (m) => m.messageId === evt.messageId,
+          );
+
+          if (msgIndex === -1) return;
+
+          const msg = this.messages[msgIndex];
+          const reactions = msg.reactions ? [...msg.reactions] : [];
+
+          const rIndex = reactions.findIndex(
+            (r) => r.reactedById === evt.reactedById,
+          );
+
+          if (evt.action === 'REMOVED') {
+            if (rIndex !== -1) reactions.splice(rIndex, 1);
+          } else {
+            const newReaction = {
+              type: evt.type,
+              reactedById: evt.reactedById,
+            };
+
+            if (rIndex === -1) reactions.push(newReaction);
+            else reactions[rIndex] = newReaction;
+          }
+
+          this.messages[msgIndex] = {
+            ...msg,
+            reactions,
+          };
+        }
+      },
+    );
   }
 }

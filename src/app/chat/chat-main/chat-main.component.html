@@ -84,107 +84,153 @@
   >
     <div class="flex flex-col min-h-full gap-3 justify-end">
       <div *ngFor="let message of messages; let last = last" class="w-full">
-        <div
-          class="flex w-full"
-          [ngClass]="{
-            'justify-end': message.senderId === me.id,
-            'justify-start': message.senderId !== me.id,
-          }"
-        >
+        <!-- ✅ bubble wrapper -->
+        <div class="relative group">
+          <!-- MESSAGE BUBBLE -->
           <div
-            class="flex items-end gap-2 max-w-[85%]"
+            class="px-4 py-2 rounded-2xl whitespace-pre-line break-words shadow-echo-md select-text"
             [ngClass]="{
-              'flex-row': message.senderId !== me.id,
-              'flex-row-reverse': message.senderId === me.id,
+              'bg-brand text-white': message.senderId === me.id,
+              'bg-bg-hover text-text-body': message.senderId !== me.id,
             }"
+            (contextmenu)="$event.preventDefault()"
+            (pointerdown)="onMsgPressStart(message)"
+            (pointerup)="onMsgPressEnd()"
+            (pointerleave)="onMsgPressEnd()"
+            (click)="activeReactionMessageId = null"
+          >
+            {{ message.content }}
+          </div>
+
+          <!-- ✅ Desktop quick react button (hover) -->
+          <button
+            type="button"
+            class="hidden md:flex absolute -top-3 items-center justify-center h-7 w-7 rounded-xl border border-border-base bg-bg-panel/90 backdrop-blur shadow-echo-md text-text-muted hover:text-text-body hover:bg-bg-hover transition opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
+            [ngClass]="{
+              '-right-2': message.senderId === me.id,
+              '-left-2': message.senderId !== me.id,
+            }"
+            (click)="openReactionPicker(message, $event)"
+            aria-label="Add reaction"
+          >
+            <span class="text-base leading-none">+</span>
+          </button>
+
+          <!-- ✅ Reaction picker -->
+          <div
+            *ngIf="activeReactionMessageId === message.messageId"
+            class="absolute z-40 mt-2"
+            [ngClass]="{
+              'right-0': message.senderId === me.id,
+              'left-0': message.senderId !== me.id,
+            }"
+            (click)="$event.stopPropagation()"
           >
             <div
-              *ngIf="message.senderId !== me.id"
-              class="h-8 w-8 rounded-full overflow-hidden border border-border-base flex-shrink-0"
+              class="flex items-center gap-1 p-2 rounded-2xl border border-border-base bg-bg-panel/95 backdrop-blur shadow-echo-md"
             >
-              <img
-                [src]="message.senderAvatar"
-                class="h-full w-full object-cover"
-                alt="avatar"
-              />
+              <button
+                type="button"
+                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
+                (click)="react(message, 'LIKE')"
+              >
+                👍
+              </button>
+
+              <button
+                type="button"
+                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
+                (click)="react(message, 'LAUGH')"
+              >
+                😂
+              </button>
+
+              <button
+                type="button"
+                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
+                (click)="react(message, 'SAD')"
+              >
+                😢
+              </button>
+
+              <button
+                type="button"
+                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
+                (click)="react(message, 'ANGRY')"
+              >
+                😡
+              </button>
+
+              <button
+                type="button"
+                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
+                (click)="react(message, 'FIRE')"
+              >
+                🔥
+              </button>
             </div>
+          </div>
 
-            <div
-              class="flex flex-col"
-              [ngClass]="{
-                'items-end': message.senderId === me.id,
-                'items-start': message.senderId !== me.id,
-              }"
-            >
-              <span class="text-text-muted text-[0.7rem] mb-1">
-                {{ message.createdAt | date: "shortTime" }}
-              </span>
-
-              <div
-                class="px-4 py-2 rounded-2xl whitespace-pre-line break-words shadow-echo-md"
+          <!-- ✅ Display reactions under bubble -->
+          <div
+            *ngIf="message.reactions?.length"
+            class="mt-1 flex"
+            [ngClass]="{
+              'justify-end': message.senderId === me.id,
+              'justify-start': message.senderId !== me.id,
+            }"
+          >
+            <div class="flex gap-1">
+              <span
+                *ngFor="let r of message.reactions"
+                class="px-2 py-1 rounded-full text-sm border border-border-base bg-bg-panel/80 backdrop-blur shadow-echo-md"
                 [ngClass]="{
-                  'bg-brand text-white': message.senderId === me.id,
-                  'bg-bg-hover text-text-body': message.senderId !== me.id,
+                  'ring-1 ring-brand-active': r.reactedById === me.id,
                 }"
               >
-                {{ message.content }}
-              </div>
-
-              <div
-                *ngIf="last && message.senderId === me.id"
-                class="mt-1 flex justify-end"
-              >
-                <span
-                  class="flex items-center gap-1 text-sm font-medium"
-                  [ngClass]="
-                    isMessageSeen ? 'text-brand-active' : 'text-text-muted'
-                  "
-                >
-                  <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
-                  {{ isMessageSeen ? "Seen" : "Sent" }}
-                </span>
-              </div>
+                {{ reactionEmoji(r.type) }}
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Message request actions -->
-    <div class="text-center my-3" *ngIf="clickedConvo?.status === 'PENDING'">
-      <span
-        class="block text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
+  <!-- Message request actions -->
+  <div class="text-center my-3" *ngIf="clickedConvo?.status === 'PENDING'">
+    <span
+      class="block text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
+    >
+      You haven’t accepted this message request yet. Reply to start the
+      conversation.
+    </span>
+
+    <div class="mt-3 flex justify-center gap-2">
+      <button
+        class="px-4 py-2 rounded-xl bg-brand text-white text-sm font-semibold shadow-echo"
+        (click)="acceptRequest(clickedConvo)"
+        type="button"
       >
-        You haven’t accepted this message request yet. Reply to start the
-        conversation.
-      </span>
+        Accept
+      </button>
 
-      <div class="mt-3 flex justify-center gap-2">
-        <button
-          class="px-4 py-2 rounded-xl bg-brand text-white text-sm font-semibold shadow-echo"
-          (click)="acceptRequest(clickedConvo)"
-          type="button"
-        >
-          Accept
-        </button>
-
-        <button
-          class="px-4 py-2 rounded-xl bg-bg-base border border-border-base text-sm font-semibold text-text-muted hover:text-text-body"
-          (click)="ignoreRequest(clickedConvo)"
-          type="button"
-        >
-          Reject
-        </button>
-      </div>
-    </div>
-
-    <div class="text-center my-3" *ngIf="clickedConvo?.status === 'NEUTRAL'">
-      <span
-        class="text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
+      <button
+        class="px-4 py-2 rounded-xl bg-bg-base border border-border-base text-sm font-semibold text-text-muted hover:text-text-body"
+        (click)="ignoreRequest(clickedConvo)"
+        type="button"
       >
-        Say hi! This is the beginning of your conversation.
-      </span>
+        Reject
+      </button>
     </div>
+  </div>
+
+  <div class="text-center my-3" *ngIf="clickedConvo?.status === 'NEUTRAL'">
+    <span
+      class="text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
+    >
+      Say hi! This is the beginning of your conversation.
+    </span>
   </div>
 
   <!-- ✅ typing indicator (fixed, not inside scroll) -->

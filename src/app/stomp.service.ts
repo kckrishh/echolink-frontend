@@ -72,4 +72,7 @@ export class StompService {
   ): StompSubscription {
     return this.client.subscribe(destination, callback);
   }
+  subscribeForReaction(destination: string, callback: any): StompSubscription {
+    return this.client.subscribe(destination, callback);
+  }
 }
