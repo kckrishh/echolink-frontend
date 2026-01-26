@@ -93,6 +93,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
         this.subscribeForMessage();
         this.subscribeForTypingIndicator();
         this.subscribeForSeenIndicator();
+        this.subscribeForReaction();
       });
 
     this.authService.me$.subscribe({

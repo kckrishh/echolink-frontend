@@ -25,18 +25,15 @@
     <div
       class="px-3 sm:px-4 flex justify-start items-center text-text-heading h-full gap-2 sm:gap-3 min-w-0"
     >
-      <!-- ✅ back always near avatar (mobile only) -->
       <button
         *ngIf="isMobile"
         type="button"
         class="mr-1 -ml-1 p-2 rounded-xl text-text-muted hover:text-text-body hover:bg-bg-hover transition"
         (click)="goBack()"
-        aria-label="Back"
       >
         <lucide-icon name="arrow-left" class="w-5 h-5"></lucide-icon>
       </button>
 
-      <!-- avatar -->
       <div
         class="rounded-full bg-white border border-border-base flex items-center justify-center flex-shrink-0 h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14"
       >
@@ -46,7 +43,6 @@
         />
       </div>
 
-      <!-- name + status -->
       <div class="min-w-0 flex flex-col justify-center">
         <h3
           class="text-base sm:text-lg md:text-[1.4rem] leading-tight truncate"
@@ -58,16 +54,15 @@
           <span
             class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-brand-active shadow-echo"
           ></span>
-          <span class="text-text-muted text-[0.7rem] sm:text-xs md:text-xs">
+          <span class="text-text-muted text-[0.7rem] sm:text-xs">
             Active now
           </span>
         </div>
       </div>
     </div>
 
-    <!-- header right side -->
     <div
-      class="text-text-body flex items-center justify-end gap-3 sm:gap-4 pr-3 sm:pr-4 md:pr-14 w-auto md:w-[8rem] shrink-0"
+      class="text-text-body flex items-center justify-end gap-3 sm:gap-4 pr-3 sm:pr-4 md:pr-14"
     >
       <lucide-icon name="search" class="w-5 h-5 md:w-6 md:h-6"></lucide-icon>
       <lucide-icon
@@ -77,119 +72,115 @@
     </div>
   </header>
 
-  <!-- ✅ messages area (ONLY scroll area) -->
+  <!-- messages -->
   <div
-    class="flex-1 min-h-0 max-h-[85vh] md:max-h-none overflow-y-auto px-4 py-2"
+    class="flex-1 min-h-0 overflow-y-auto px-4 py-2"
     #messageContainer
+    (click)="activeReactionMessageId = null"
   >
     <div class="flex flex-col min-h-full gap-3 justify-end">
       <div *ngFor="let message of messages; let last = last" class="w-full">
-        <!-- ✅ bubble wrapper -->
-        <div class="relative group">
-          <!-- MESSAGE BUBBLE -->
+        <div
+          class="flex w-full"
+          [ngClass]="{
+            'justify-end': message.senderId === me.id,
+            'justify-start': message.senderId !== me.id,
+          }"
+        >
           <div
-            class="px-4 py-2 rounded-2xl whitespace-pre-line break-words shadow-echo-md select-text"
+            class="inline-flex items-end gap-2 max-w-[85%]"
             [ngClass]="{
-              'bg-brand text-white': message.senderId === me.id,
-              'bg-bg-hover text-text-body': message.senderId !== me.id,
+              'flex-row': message.senderId !== me.id,
+              'flex-row-reverse': message.senderId === me.id,
             }"
-            (contextmenu)="$event.preventDefault()"
-            (pointerdown)="onMsgPressStart(message)"
-            (pointerup)="onMsgPressEnd()"
-            (pointerleave)="onMsgPressEnd()"
-            (click)="activeReactionMessageId = null"
-          >
-            {{ message.content }}
-          </div>
-
-          <!-- ✅ Desktop quick react button (hover) -->
-          <button
-            type="button"
-            class="hidden md:flex absolute -top-3 items-center justify-center h-7 w-7 rounded-xl border border-border-base bg-bg-panel/90 backdrop-blur shadow-echo-md text-text-muted hover:text-text-body hover:bg-bg-hover transition opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
-            [ngClass]="{
-              '-right-2': message.senderId === me.id,
-              '-left-2': message.senderId !== me.id,
-            }"
-            (click)="openReactionPicker(message, $event)"
-            aria-label="Add reaction"
-          >
-            <span class="text-base leading-none">+</span>
-          </button>
-
-          <!-- ✅ Reaction picker -->
-          <div
-            *ngIf="activeReactionMessageId === message.messageId"
-            class="absolute z-40 mt-2"
-            [ngClass]="{
-              'right-0': message.senderId === me.id,
-              'left-0': message.senderId !== me.id,
-            }"
-            (click)="$event.stopPropagation()"
           >
             <div
-              class="flex items-center gap-1 p-2 rounded-2xl border border-border-base bg-bg-panel/95 backdrop-blur shadow-echo-md"
+              *ngIf="message.senderId !== me.id"
+              class="h-8 w-8 rounded-full overflow-hidden border border-border-base flex-shrink-0"
             >
-              <button
-                type="button"
-                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
-                (click)="react(message, 'LIKE')"
-              >
-                👍
-              </button>
-
-              <button
-                type="button"
-                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
-                (click)="react(message, 'LAUGH')"
-              >
-                😂
-              </button>
-
-              <button
-                type="button"
-                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
-                (click)="react(message, 'SAD')"
-              >
-                😢
-              </button>
-
-              <button
-                type="button"
-                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
-                (click)="react(message, 'ANGRY')"
-              >
-                😡
-              </button>
-
-              <button
-                type="button"
-                class="h-9 w-9 rounded-xl hover:bg-bg-hover transition flex items-center justify-center text-lg"
-                (click)="react(message, 'FIRE')"
-              >
-                🔥
-              </button>
+              <img
+                [src]="message.senderAvatar"
+                class="h-full w-full object-cover"
+              />
             </div>
-          </div>
 
-          <!-- ✅ Display reactions under bubble -->
-          <div
-            *ngIf="message.reactions?.length"
-            class="mt-1 flex"
-            [ngClass]="{
-              'justify-end': message.senderId === me.id,
-              'justify-start': message.senderId !== me.id,
-            }"
-          >
-            <div class="flex gap-1">
-              <span
-                *ngFor="let r of message.reactions"
-                class="px-2 py-1 rounded-full text-sm border border-border-base bg-bg-panel/80 backdrop-blur shadow-echo-md"
-                [ngClass]="{
-                  'ring-1 ring-brand-active': r.reactedById === me.id,
-                }"
-              >
-                {{ reactionEmoji(r.type) }}
+            <div
+              class="flex flex-col"
+              [ngClass]="{
+                'items-end': message.senderId === me.id,
+                'items-start': message.senderId !== me.id,
+              }"
+            >
+              <span class="text-text-muted text-[0.7rem] mb-1">
+                {{ message.createdAt | date: "shortTime" }}
               </span>
+
+              <!-- ✅ ONLY CHANGE IS HERE -->
+              <div class="relative group w-fit max-w-full">
+                <div
+                  class="inline-block w-fit max-w-full px-4 py-2 rounded-2xl whitespace-pre-line break-words shadow-echo-md"
+                  [ngClass]="{
+                    'bg-brand text-white': message.senderId === me.id,
+                    'bg-bg-hover text-text-body': message.senderId !== me.id,
+                  }"
+                  (pointerdown)="onMsgPressStart(message)"
+                  (pointerup)="onMsgPressEnd()"
+                  (pointerleave)="onMsgPressEnd()"
+                >
+                  {{ message.content }}
+                </div>
+
+                <button
+                  type="button"
+                  class="hidden md:flex absolute -top-3 h-7 w-7 items-center justify-center rounded-xl border border-border-base bg-bg-panel/90 backdrop-blur shadow-echo-md text-text-muted hover:text-text-body hover:bg-bg-hover transition opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
+                  [ngClass]="{
+                    '-right-2': message.senderId === me.id,
+                    '-left-2': message.senderId !== me.id,
+                  }"
+                  (click)="openReactionPicker(message, $event)"
+                >
+                  +
+                </button>
+
+                <div
+                  *ngIf="activeReactionMessageId === message.messageId"
+                  class="absolute z-40 mt-2"
+                  [ngClass]="{
+                    'right-0': message.senderId === me.id,
+                    'left-0': message.senderId !== me.id,
+                  }"
+                >
+                  <div
+                    class="flex gap-1 p-2 rounded-2xl border border-border-base bg-bg-panel shadow-echo-md"
+                  >
+                    <button (click)="react(message, 'LIKE')">👍</button>
+                    <button (click)="react(message, 'LAUGH')">😂</button>
+                    <button (click)="react(message, 'SAD')">😢</button>
+                    <button (click)="react(message, 'ANGRY')">😡</button>
+                    <button (click)="react(message, 'FIRE')">🔥</button>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="message.reactions?.length" class="mt-1 flex w-fit">
+                <div class="flex gap-1">
+                  <span
+                    *ngFor="let r of message.reactions"
+                    class="px-2 py-1 rounded-full text-sm border border-border-base bg-bg-panel"
+                  >
+                    {{ reactionEmoji(r.type) }}
+                  </span>
+                </div>
+              </div>
+
+              <div
+                *ngIf="last && message.senderId === me.id"
+                class="mt-1 flex justify-end"
+              >
+                <span class="text-sm text-text-muted">
+                  {{ isMessageSeen ? "Seen" : "Sent" }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -197,54 +188,17 @@
     </div>
   </div>
 
-  <!-- Message request actions -->
-  <div class="text-center my-3" *ngIf="clickedConvo?.status === 'PENDING'">
-    <span
-      class="block text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
-    >
-      You haven’t accepted this message request yet. Reply to start the
-      conversation.
-    </span>
-
-    <div class="mt-3 flex justify-center gap-2">
-      <button
-        class="px-4 py-2 rounded-xl bg-brand text-white text-sm font-semibold shadow-echo"
-        (click)="acceptRequest(clickedConvo)"
-        type="button"
-      >
-        Accept
-      </button>
-
-      <button
-        class="px-4 py-2 rounded-xl bg-bg-base border border-border-base text-sm font-semibold text-text-muted hover:text-text-body"
-        (click)="ignoreRequest(clickedConvo)"
-        type="button"
-      >
-        Reject
-      </button>
-    </div>
-  </div>
-
-  <div class="text-center my-3" *ngIf="clickedConvo?.status === 'NEUTRAL'">
-    <span
-      class="text-text-muted text-sm bg-bg-hover px-3 py-2 rounded-xl border border-border-base"
-    >
-      Say hi! This is the beginning of your conversation.
-    </span>
-  </div>
-
-  <!-- ✅ typing indicator (fixed, not inside scroll) -->
-  <div class="px-4 pb-2 shrink-0" *ngIf="isOtherTyping">
+  <!-- typing indicator -->
+  <div class="px-4 pb-2" *ngIf="isOtherTyping">
     <div class="flex items-center gap-2">
       <img
         [src]="clickedConvo?.otherUserAvatar"
         class="h-6 w-6 rounded-full border border-border-base"
       />
-
       <div
-        class="px-3 py-2 mt-3 rounded-2xl bg-bg-hover border border-border-base shadow-echo-md"
+        class="px-3 py-2 rounded-2xl bg-bg-hover border border-border-base shadow-echo-md"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex gap-1">
           <span class="typing-dot"></span>
           <span class="typing-dot typing-dot-2"></span>
           <span class="typing-dot typing-dot-3"></span>
@@ -253,17 +207,15 @@
     </div>
   </div>
 
-  <!-- ✅ composer fixed to bottom -->
-  <div
-    class="px-4 py-3 border-t border-border-base shrink-0 bg-bg-panel pb-[calc(env(safe-area-inset-bottom)+0.75rem)]"
-  >
+  <!-- composer -->
+  <div class="px-4 py-3 border-t border-border-base bg-bg-panel">
     <form (ngSubmit)="sendMessage()">
       <input
         type="text"
         placeholder="Type a message"
-        class="w-full h-10 rounded-2xl bg-input-bg border border-input-border text-text-body placeholder:text-input-placeholder px-4 outline-none hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus transition duration-150 ease-out"
-        name="message"
+        class="w-full h-10 rounded-2xl bg-input-bg border border-input-border px-4"
         [(ngModel)]="messageText"
+        name="message"
         (input)="onTyping()"
       />
     </form>
