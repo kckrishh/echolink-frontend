@@ -11,11 +11,12 @@ import { filter } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   showNavbar = true;
+  isChat!: boolean;
 
   constructor(
     private stompService: StompService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -25,6 +26,9 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         const route = this.router.routerState.root.firstChild;
         this.showNavbar = !route?.snapshot.data['hideNavbar'];
+        if (this.router.url.includes('chat')) {
+          this.isChat = true;
+        }
         console.log(this.showNavbar);
       });
   }
