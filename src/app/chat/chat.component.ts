@@ -43,21 +43,9 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     if (this.router.url.includes('dm') && this.isMobile) {
       this.conversationService.backToList();
+    } else {
+      this.conversationService.enterChatOnMobile;
     }
-
-    this.navSub = this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => {
-        if (!this.isMobile) this.conversationService.enterChatOnMobile();
-
-        const conversationId = this.findConversationId(this.route);
-
-        if (conversationId) {
-          this.conversationService.enterChatOnMobile(); // show chat
-        } else {
-          this.conversationService.backToList(); // show list
-        }
-      });
   }
 
   private findConversationId(route: ActivatedRoute): string | null {
