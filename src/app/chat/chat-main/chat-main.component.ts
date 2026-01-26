@@ -275,6 +275,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
       '/user/queue/reaction',
       (message: IMessage) => {
         const evt = JSON.parse(message.body);
+        console.log(evt);
 
         if (
           evt.eventType === 'DM_REACTION' &&
