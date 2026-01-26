@@ -153,11 +153,15 @@
                   <div
                     class="flex gap-1 p-2 rounded-2xl border border-border-base bg-bg-panel shadow-echo-md"
                   >
-                    <button (click)="react(message, 'LIKE')">👍</button>
-                    <button (click)="react(message, 'LAUGH')">😂</button>
-                    <button (click)="react(message, 'SAD')">😢</button>
-                    <button (click)="react(message, 'ANGRY')">😡</button>
-                    <button (click)="react(message, 'FIRE')">🔥</button>
+                    <button (click)="react(message, 'LIKE', $event)">👍</button>
+                    <button (click)="react(message, 'LAUGH', $event)">
+                      😂
+                    </button>
+                    <button (click)="react(message, 'SAD', $event)">😢</button>
+                    <button (click)="react(message, 'ANGRY', $event)">
+                      😡
+                    </button>
+                    <button (click)="react(message, 'FIRE', $event)">🔥</button>
                   </div>
                 </div>
               </div>

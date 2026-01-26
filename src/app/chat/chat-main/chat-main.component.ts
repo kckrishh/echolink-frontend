@@ -257,8 +257,9 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     this.pressTimer = null;
   }
 
-  react(message: MessageDto, type: ReactionType) {
+  react(message: MessageDto, type: ReactionType, event: Event) {
     // close picker instantly
+    event?.stopPropagation();
     this.activeReactionMessageId = null;
 
     const payload = {
