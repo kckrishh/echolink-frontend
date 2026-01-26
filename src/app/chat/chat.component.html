@@ -1,7 +1,7 @@
 <!-- chat.component.html -->
 <div class="h-full md:h-[87vh] w-full overflow-hidden flex mx-auto">
   <section
-    class="h-full w-full grid rounded-md shadow-2xl"
+    class="h-full w-full grid rounded-md shadow-2xl bg-blue-500"
     [ngClass]="{
       'md:grid-cols-[0.5fr_1.8fr]': !isGroup,
       'md:grid-cols-[0.5fr_1.8fr_0.3fr]': isGroup,
@@ -33,9 +33,9 @@
       <app-sidebar-left></app-sidebar-left>
     </div>
 
-    <!-- CHAT (full screen) -->
+    <!-- CHAT (full screen) bg-bg-panel -->
     <div
-      class="bg-bg-panel min-w-0 h-full min-h-0 md:hidden"
+      class="bg-red-400 min-w-0 h-full min-h-0 md:hidden"
       *ngIf="isMobile && mobileView === 'chat'"
     >
       <!-- Back button overlay (top-left) -->

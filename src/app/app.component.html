@@ -1,11 +1,13 @@
-<nav
-  *ngIf="showNavbar"
-  class="h-[4rem] md:h-[5rem] px-4 sm:px-12 md:px-28 border-border-base border-y-2 w-full"
->
-  <app-nav></app-nav>
-</nav>
-<div class="h-[85vh] w-[95vw] m-auto">
-  <div class="h-full w-full">
-    <router-outlet></router-outlet>
+<div class="h-[100vh] overflow-hidden">
+  <nav
+    *ngIf="showNavbar"
+    class="h-[4rem] md:h-[5rem] px-4 sm:px-12 md:px-28 border-border-base border-y-2 w-full"
+  >
+    <app-nav></app-nav>
+  </nav>
+  <div class="h-[85vh] w-[95vw] m-auto">
+    <div class="h-full w-full">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
