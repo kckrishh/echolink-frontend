@@ -41,6 +41,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.conversationService.enterChatOnMobile();
     }
 
+    if (this.router.url.includes('dm') && this.isMobile) {
+      this.conversationService.backToList();
+    }
+
     this.navSub = this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
