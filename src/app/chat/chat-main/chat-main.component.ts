@@ -300,15 +300,15 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
             const reactions = msg.reactions ? [...msg.reactions] : [];
 
             const rIndex = reactions.findIndex(
-              (r) => r.reactedById === evt.reactedById,
+              (r) => r.reactedById === evt.data.reactedById,
             );
 
-            if (evt.action === 'REMOVED') {
+            if (evt.data.action === 'REMOVED') {
               if (rIndex !== -1) reactions.splice(rIndex, 1);
             } else {
               const newReaction = {
-                type: evt.type as ReactionType,
-                reactedById: evt.reactedById,
+                type: evt.data.type as ReactionType,
+                reactedById: evt.data.reactedById,
               };
               if (rIndex === -1) reactions.push(newReaction);
               else reactions[rIndex] = newReaction;
