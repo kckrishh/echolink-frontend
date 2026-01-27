@@ -286,7 +286,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
         if (
           evt.eventType === 'DM_REACTION' &&
-          String(evt.conversationId) === String(this.conversationId)
+          String(evt.data.conversationId) === String(this.conversationId)
         ) {
           console.log('MATCHES THIS CHAT');
           console.log('APPLUING REACTION UPDATE NOW');
