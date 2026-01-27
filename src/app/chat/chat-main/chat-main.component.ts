@@ -292,7 +292,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
           console.log('APPLUING REACTION UPDATE NOW');
           this.ngZone.run(() => {
             const msgIndex = this.messages.findIndex(
-              (m) => m.messageId === evt.messageId,
+              (m) => m.messageId === evt.data.messageId,
             );
             if (msgIndex === -1) return;
 
