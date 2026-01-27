@@ -2,6 +2,7 @@ import {
   AfterViewChecked,
   Component,
   ElementRef,
+  NgZone,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -45,6 +46,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     private conversationService: ConversationService,
     private stompService: StompService,
     private authService: AuthService,
+    private ngZone: NgZone,
   ) {}
 
   ngOnInit() {
@@ -284,35 +286,37 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
           evt.eventType === 'DM_REACTION' &&
           String(evt.conversationId) === String(this.conversationId)
         ) {
-          const msgIndex = this.messages.findIndex(
-            (m) => m.messageId === evt.messageId,
-          );
+          this.ngZone.run(() => {
+            const msgIndex = this.messages.findIndex(
+              (m) => m.messageId === evt.messageId,
+            );
 
-          if (msgIndex === -1) return;
+            if (msgIndex === -1) return;
 
-          const msg = this.messages[msgIndex];
-          const reactions = msg.reactions ? [...msg.reactions] : [];
+            const msg = this.messages[msgIndex];
+            const reactions = msg.reactions ? [...msg.reactions] : [];
 
-          const rIndex = reactions.findIndex(
-            (r) => r.reactedById === evt.reactedById,
-          );
+            const rIndex = reactions.findIndex(
+              (r) => r.reactedById === evt.reactedById,
+            );
 
-          if (evt.action === 'REMOVED') {
-            if (rIndex !== -1) reactions.splice(rIndex, 1);
-          } else {
-            const newReaction = {
-              type: evt.type,
-              reactedById: evt.reactedById,
+            if (evt.action === 'REMOVED') {
+              if (rIndex !== -1) reactions.splice(rIndex, 1);
+            } else {
+              const newReaction = {
+                type: evt.type,
+                reactedById: evt.reactedById,
+              };
+
+              if (rIndex === -1) reactions.push(newReaction);
+              else reactions[rIndex] = newReaction;
+            }
+
+            this.messages[msgIndex] = {
+              ...msg,
+              reactions,
             };
-
-            if (rIndex === -1) reactions.push(newReaction);
-            else reactions[rIndex] = newReaction;
-          }
-
-          this.messages[msgIndex] = {
-            ...msg,
-            reactions,
-          };
+          });
         }
       },
     );
