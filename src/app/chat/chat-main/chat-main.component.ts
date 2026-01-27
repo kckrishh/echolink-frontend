@@ -279,13 +279,17 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     this.stompService.subscribeForReaction(
       '/user/queue/reaction',
       (message: IMessage) => {
+        console.log('RAW WS REACTION FRAME: ', message.body);
         const evt = JSON.parse(message.body);
-        console.log(evt);
+        console.log('PARSED EVT:', evt);
+        console.log('CURRENT CONVO:', this.conversationId);
 
         if (
           evt.eventType === 'DM_REACTION' &&
           String(evt.conversationId) === String(this.conversationId)
         ) {
+          console.log('MATCHES THIS CHAT');
+          console.log('APPLUING REACTION UPDATE NOW');
           this.ngZone.run(() => {
             const msgIndex = this.messages.findIndex(
               (m) => m.messageId === evt.messageId,
