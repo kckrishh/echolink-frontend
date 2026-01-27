@@ -260,6 +260,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
   react(message: MessageDto, type: ReactionType, event: Event) {
     // close picker instantly
 
+    console.log('react button clicked');
     event?.stopPropagation();
     this.activeReactionMessageId = null;
 
@@ -271,6 +272,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     // send to backend
     this.stompService.publishForReaction('/app/chat.reaction', payload);
   }
+
   subscribeForReaction() {
     this.stompService.subscribeForReaction(
       '/user/queue/reaction',
