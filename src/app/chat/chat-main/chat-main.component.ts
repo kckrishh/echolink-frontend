@@ -290,7 +290,6 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
             const msgIndex = this.messages.findIndex(
               (m) => m.messageId === evt.messageId,
             );
-
             if (msgIndex === -1) return;
 
             const msg = this.messages[msgIndex];
@@ -304,18 +303,15 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
               if (rIndex !== -1) reactions.splice(rIndex, 1);
             } else {
               const newReaction = {
-                type: evt.type,
+                type: evt.type as ReactionType,
                 reactedById: evt.reactedById,
               };
-
               if (rIndex === -1) reactions.push(newReaction);
               else reactions[rIndex] = newReaction;
             }
 
-            this.messages[msgIndex] = {
-              ...msg,
-              reactions,
-            };
+            this.messages[msgIndex] = { ...msg, reactions };
+            this.messages = [...this.messages]; // ✅ THIS is the hammer
           });
         }
       },
