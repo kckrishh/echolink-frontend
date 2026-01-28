@@ -55,7 +55,6 @@ export class ChatMainComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 768;
     });
-    this.scrollToBottom();
 
     this.route.queryParams.subscribe((params) => {
       this.conversationId = params['conversationId'];
@@ -71,6 +70,7 @@ export class ChatMainComponent implements OnInit {
         next: ({ messages, convo }) => {
           this.messages = messages;
           this.clickedConvo = convo;
+          this.scrollToBottom();
 
           this.conversationService.markAsRead(this.conversationId).subscribe({
             next: () => {
