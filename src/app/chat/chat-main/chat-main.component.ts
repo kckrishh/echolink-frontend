@@ -107,10 +107,11 @@ export class ChatMainComponent implements OnInit {
   }
 
   scrollToBottom() {
-    if (this.messageContainer?.nativeElement) {
-      this.messageContainer.nativeElement.scrollTop =
-        this.messageContainer.nativeElement.scrollHeight;
-    }
+    setTimeout(() => {
+      const el = this.messageContainer?.nativeElement;
+      if (!el) return;
+      el.scrollTop = el.scrollHeight;
+    }, 0);
   }
 
   sendMessage() {
