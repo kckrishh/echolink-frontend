@@ -97,6 +97,8 @@ export class NavComponent implements OnInit {
   showLogoutModal = false;
 
   logout() {
-    this.authService.logout().subscribe();
+    this.authService.logout().subscribe({
+      next: this.router.navigate(['/auth']),
+    });
   }
 }
