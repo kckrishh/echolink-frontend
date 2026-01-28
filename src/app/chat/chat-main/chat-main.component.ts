@@ -28,7 +28,7 @@ type ReactionType = 'LIKE' | 'LAUGH' | 'SAD' | 'ANGRY' | 'FIRE';
   templateUrl: './chat-main.component.html',
   styleUrl: './chat-main.component.css',
 })
-export class ChatMainComponent implements OnInit, AfterViewChecked {
+export class ChatMainComponent implements OnInit {
   protected conversationId: String | null = null;
   protected messages!: MessageDto[];
   protected clickedConvo: any = null;
@@ -104,9 +104,6 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
       },
     });
   }
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
 
   scrollToBottom() {
     if (this.messageContainer?.nativeElement) {
@@ -136,11 +133,12 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
 
       if (msg.senderId === this.me.id) {
         this.isMessageSeen = false;
+        this.messageText = '';
       }
       if (String(msg.conversationId) === String(this.conversationId)) {
         this.messages.push(msg);
-        this.messageText = '';
 
+        this.scrollToBottom();
         this.conversationService.markAsRead(this.conversationId).subscribe({
           next: () => this.conversationService.loadConversations().subscribe(),
         });
@@ -279,17 +277,12 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
     this.stompService.subscribeForReaction(
       '/user/queue/reaction',
       (message: IMessage) => {
-        console.log('RAW WS REACTION FRAME: ', message.body);
         const evt = JSON.parse(message.body);
-        console.log('PARSED EVT:', evt);
-        console.log('CURRENT CONVO:', this.conversationId);
 
         if (
           evt.eventType === 'DM_REACTION' &&
           String(evt.data.conversationId) === String(this.conversationId)
         ) {
-          console.log('MATCHES THIS CHAT');
-          console.log('APPLUING REACTION UPDATE NOW');
           this.ngZone.run(() => {
             const msgIndex = this.messages.findIndex(
               (m) => m.messageId === evt.data.messageId,
@@ -307,7 +300,7 @@ export class ChatMainComponent implements OnInit, AfterViewChecked {
               if (rIndex !== -1) reactions.splice(rIndex, 1);
             } else {
               const newReaction = {
-                type: evt.data.type as ReactionType,
+                type: evt.data.type,
                 reactedById: evt.data.reactedById,
               };
               if (rIndex === -1) reactions.push(newReaction);

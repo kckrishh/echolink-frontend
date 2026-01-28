@@ -1,58 +1,80 @@
 <!-- sidebar-left.component.html -->
 <section
-  class="h-full w-full flex flex-col overflow-hidden border-border-base md:border-r-2"
+  class="h-full w-full flex flex-col overflow-hidden border-border-base md:border-r-2 bg-bg-panel"
 >
-  <!-- ✅ top brand strip (looks premium on mobile, harmless on desktop) -->
+  <!-- Top header strip (NO logo/search, just context + subtle actions) -->
   <div
-    class="flex items-center justify-between px-4 h-16 flex-shrink-0 border-b border-border-base bg-bg-panel/90 backdrop-blur-md"
+    class="flex items-center justify-between px-4 pt-4 pb-3 border-b border-border-base bg-bg-panel/70 backdrop-blur-md"
   >
-    <div class="flex items-center gap-3 min-w-0">
-      <!-- logo placeholder -->
-      <div
-        class="h-10 w-10 rounded-xl bg-white/10 border border-border-base"
-      ></div>
-
-      <div class="min-w-0">
-        <div class="text-text-heading font-semibold tracking-wide truncate">
-          EchoLink
-        </div>
-        <div class="text-text-muted text-xs truncate">Direct Messages</div>
-      </div>
+    <!-- Left: title + subtitle -->
+    <div class="min-w-0">
+      <h3 class="text-[0.95rem] font-semibold tracking-wide text-text-heading">
+        Direct Messages
+      </h3>
+      <p class="text-[0.72rem] text-text-muted truncate">
+        Your recent conversations
+      </p>
     </div>
 
-    <!-- right avatar placeholder -->
-    <div
-      class="h-10 w-10 rounded-full bg-white/10 border border-border-base"
-    ></div>
+    <!-- Right: small quick actions (optional, classy) -->
+    <div class="flex items-center gap-2">
+      <!-- New message / compose (wire later if you want) -->
+      <button
+        type="button"
+        class="h-9 w-9 rounded-xl border border-border-base bg-bg-base/40 hover:bg-bg-hover text-text-muted hover:text-text-body shadow-echo-md transition flex items-center justify-center"
+        aria-label="New message"
+      >
+        <lucide-icon name="square-pen" class="w-5 h-5"></lucide-icon>
+      </button>
+
+      <!-- Filter / sort (wire later if you want) -->
+      <button
+        type="button"
+        class="h-9 w-9 rounded-xl border border-border-base bg-bg-base/40 hover:bg-bg-hover text-text-muted hover:text-text-body shadow-echo-md transition flex items-center justify-center"
+        aria-label="Filter"
+      >
+        <lucide-icon name="sliders-horizontal" class="w-5 h-5"></lucide-icon>
+      </button>
+    </div>
   </div>
 
-  <!-- ✅ search -->
-  <div class="px-4 py-3 border-b border-border-base flex-shrink-0">
-    <div class="relative">
-      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
-        <lucide-icon name="search" class="w-4 h-4"></lucide-icon>
+  <!-- Content -->
+  <div class="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4 py-4">
+    <!-- Sub section label (clean) -->
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-[0.75rem] tracking-[0.18em] uppercase text-text-muted">
+        Inbox
       </span>
-      <input
-        class="w-full h-11 pl-10 pr-4 rounded-2xl bg-input-bg border border-input-border text-text-body placeholder:text-input-placeholder outline-none hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus transition"
-        placeholder="Search users"
-        type="text"
-      />
-    </div>
-  </div>
 
-  <!-- ✅ content -->
-  <div class="flex-1 min-h-0 overflow-y-auto px-4 py-4">
-    <h3 class="text-text-secondary font-semibold pb-2">DIRECT MESSAGES</h3>
+      <!-- Small hint chip (looks premium, doesn’t repeat navbar search) -->
+      <span
+        class="text-[0.7rem] text-text-muted px-2.5 py-1 rounded-full border border-border-base bg-bg-base/40"
+      >
+        Tap to open
+      </span>
+    </div>
+
+    <!-- Your DM component (keeps your tabs + list exactly as-is inside) -->
     <app-dm></app-dm>
 
-    <!-- tiny spacer so last item doesn't feel cramped -->
-    <div class="h-8"></div>
+    <!-- Bottom safe space so last item doesn’t feel glued -->
+    <div class="h-6"></div>
   </div>
 
-  <!-- ✅ mobile hint footer (desktop doesn’t care) -->
+  <!-- Bottom subtle footer (mobile feels finished, desktop still fine) -->
   <div
-    class="px-4 py-3 border-t border-border-base text-text-muted text-xs flex-shrink-0"
+    class="px-4 py-3 border-t border-border-base bg-bg-panel/70 backdrop-blur-md"
   >
-    Tip: Tap a chat to start messaging.
+    <div class="flex items-center justify-between">
+      <p class="text-[0.72rem] text-text-muted">
+        Tip: Tap a chat to start messaging.
+      </p>
+
+      <!-- Optional tiny status dot -->
+      <div class="flex items-center gap-2">
+        <span class="h-2 w-2 rounded-full bg-brand-active shadow-echo"></span>
+        <span class="text-[0.72rem] text-text-muted">Online</span>
+      </div>
+    </div>
   </div>
 </section>
