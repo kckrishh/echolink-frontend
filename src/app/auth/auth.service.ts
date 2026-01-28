@@ -49,9 +49,11 @@ export class AuthService {
   }
 
   logout(): any {
-    return this.http
-      .post<void>(`${this.baseUrl}/token/logout`, {}, { withCredentials: true })
-      .pipe(tap(() => this.clearAccessToken()));
+    return this.http.post<void>(
+      `${this.baseUrl}/token/logout`,
+      {},
+      { withCredentials: true },
+    );
   }
 
   setAccessToken(token: string) {
