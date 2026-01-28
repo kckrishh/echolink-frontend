@@ -114,7 +114,7 @@ export class ChatMainComponent implements OnInit {
         top: el.scrollHeight,
         behavior: 'smooth',
       });
-    }, 0);
+    }, 1000);
   }
 
   showScrollToBottom: boolean = false;
