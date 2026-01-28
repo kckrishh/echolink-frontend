@@ -1,7 +1,24 @@
 import { Component } from '@angular/core';
 import { RegisterService } from '../register.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+
+function passwordMatchValidator(
+  control: AbstractControl,
+): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirm = control.get('confirmPassword')?.value;
+
+  if (!password || !confirm) return null;
+
+  return password === confirm ? null : { passwordMismatch: true };
+}
 
 @Component({
   selector: 'app-register',
@@ -12,21 +29,36 @@ export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
   apiError: string | null = null;
+  policyOpen = false;
+  activePolicy: 'terms' | 'privacy' = 'terms';
 
   constructor(
     private registerService: RegisterService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
-    this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-    });
+    this.registerForm = this.fb.group(
+      {
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required]],
+        terms: [false, Validators.requiredTrue],
+      },
+      { Validators: passwordMatchValidator },
+    );
   }
 
+  openPolicy(which: 'terms' | 'privacy') {
+    this.activePolicy = which;
+    this.policyOpen = true;
+  }
+
+  closePolicy() {
+    this.policyOpen = false;
+  }
   onSubmit() {
     this.apiError = null;
+    if (this.loading) return;
 
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();

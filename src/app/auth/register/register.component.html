@@ -68,32 +68,417 @@
             class="w-full h-11 rounded-lg bg-input-bg text-input-text placeholder:text-input-placeholder px-4 border border-input-border hover:border-input-hoverBorder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
           />
         </div>
+        <p
+          *ngIf="
+            registerForm.hasError('passwordMismatch') &&
+            registerForm.get('confirmPassword')?.touched
+          "
+          class="text-sm text-red-400"
+        >
+          Passwords do not match
+        </p>
 
-        <!-- Terms -->
-        <label class="flex items-start gap-2 text-sm text-text-muted">
-          <input
-            type="checkbox"
-            formControlName="terms"
-            class="mt-1 accent-brand"
-          />
-          <span>
-            I agree to the
-            <a class="text-link hover:text-link-hover" href="#">
-              Terms of Service
-            </a>
-            and
-            <a class="text-link hover:text-link-hover" href="#">
-              Privacy Policy
-            </a>
-          </span>
-        </label>
+        <div>
+          <label class="flex items-start gap-2 text-sm text-text-muted">
+            <input
+              type="checkbox"
+              formControlName="terms"
+              class="mt-1 accent-brand"
+            />
+            <span>
+              I agree to the
+              <button
+                type="button"
+                (click)="openPolicy('terms')"
+                class="text-link hover:text-link-hover underline underline-offset-2"
+              >
+                Terms of Service
+              </button>
+              and
+              <button
+                type="button"
+                (click)="openPolicy('privacy')"
+                class="text-link hover:text-link-hover underline underline-offset-2"
+              >
+                Privacy Policy
+              </button>
+            </span>
+          </label>
+
+          <!-- POLICY MODAL -->
+          <div
+            *ngIf="policyOpen"
+            class="fixed inset-0 z-50 flex items-center justify-center px-4"
+            role="dialog"
+            aria-modal="true"
+          >
+            <!-- Backdrop -->
+            <div
+              class="absolute inset-0 bg-black/70 backdrop-blur-sm"
+              (click)="closePolicy()"
+            ></div>
+
+            <!-- Modal -->
+            <div
+              class="relative w-full max-w-3xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-xl overflow-hidden"
+            >
+              <!-- Header -->
+              <div
+                class="flex items-center justify-between px-6 py-4 border-b border-border-base bg-bg-panel/80 backdrop-blur"
+              >
+                <div class="min-w-0">
+                  <h3 class="text-lg font-semibold text-text-heading truncate">
+                    {{
+                      activePolicy === "terms"
+                        ? "Terms of Service"
+                        : "Privacy Policy"
+                    }}
+                  </h3>
+                  <p class="text-xs text-text-muted">
+                    Effective date: January 2026
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  (click)="closePolicy()"
+                  class="h-9 w-9 rounded-xl border border-border-base bg-bg-base/40 hover:bg-bg-hover text-text-muted hover:text-text-body transition flex items-center justify-center"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <!-- Tabs -->
+              <div class="px-6 py-3 border-b border-border-base flex gap-2">
+                <button
+                  type="button"
+                  (click)="activePolicy = 'terms'"
+                  class="h-9 px-4 rounded-xl border transition text-sm font-medium"
+                  [ngClass]="
+                    activePolicy === 'terms'
+                      ? 'border-border-focus bg-bg-hover text-text-heading'
+                      : 'border-border-base bg-bg-base/20 text-text-muted hover:bg-bg-hover'
+                  "
+                >
+                  Terms
+                </button>
+
+                <button
+                  type="button"
+                  (click)="activePolicy = 'privacy'"
+                  class="h-9 px-4 rounded-xl border transition text-sm font-medium"
+                  [ngClass]="
+                    activePolicy === 'privacy'
+                      ? 'border-border-focus bg-bg-hover text-text-heading'
+                      : 'border-border-base bg-bg-base/20 text-text-muted hover:bg-bg-hover'
+                  "
+                >
+                  Privacy
+                </button>
+              </div>
+
+              <!-- Scrollable body -->
+              <div class="px-6 py-5 max-h-[70vh] overflow-y-auto">
+                <!-- TERMS CONTENT -->
+                <div *ngIf="activePolicy === 'terms'" class="space-y-5 text-sm">
+                  <div
+                    class="rounded-xl border border-border-base bg-bg-base/20 p-4"
+                  >
+                    <p class="text-text-secondary">
+                      By creating an account or using EchoLink, you agree to
+                      these Terms.
+                    </p>
+                  </div>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      1. Overview
+                    </h4>
+                    <p class="text-text-secondary">
+                      EchoLink is a real-time messaging platform that lets
+                      people communicate securely and instantly. If you don’t
+                      agree with these Terms, please don’t use the service.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      2. Eligibility
+                    </h4>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                      <li>
+                        You must be at least <strong>13 years old</strong> to
+                        use EchoLink.
+                      </li>
+                      <li>
+                        You must provide accurate and up-to-date information
+                        when creating an account.
+                      </li>
+                    </ul>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      3. Your Account
+                    </h4>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                      <li>
+                        You’re responsible for keeping your credentials secure.
+                      </li>
+                      <li>
+                        Activity under your account is your responsibility.
+                      </li>
+                      <li>
+                        If you think your account is compromised, contact us.
+                      </li>
+                    </ul>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      4. Acceptable Use
+                    </h4>
+                    <p class="text-text-secondary">You agree not to:</p>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                      <li>Harass, threaten, or abuse others</li>
+                      <li>
+                        Share illegal content or content involving exploitation
+                        of minors
+                      </li>
+                      <li>Spam, phish, impersonate, or distribute malware</li>
+                      <li>
+                        Attempt to hack, reverse engineer, or disrupt EchoLink
+                      </li>
+                    </ul>
+                    <p class="text-text-secondary">
+                      We may remove content or suspend accounts that violate
+                      these rules.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      5. Your Content
+                    </h4>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                      <li>You own the content you send.</li>
+                      <li>
+                        You grant EchoLink permission to store, process, and
+                        transmit your content only to operate the service.
+                      </li>
+                      <li>We do not claim ownership of your messages.</li>
+                    </ul>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      6. Moderation & Enforcement
+                    </h4>
+                    <p class="text-text-secondary">
+                      We may investigate violations, remove content, or suspend
+                      accounts to protect users and the platform.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      7. Service Availability
+                    </h4>
+                    <p class="text-text-secondary">
+                      EchoLink is provided “as is”. We may update, change, or
+                      temporarily suspend the service as we improve it.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      8. Limitation of Liability
+                    </h4>
+                    <p class="text-text-secondary">
+                      To the maximum extent allowed by law, EchoLink isn’t
+                      liable for indirect or incidental damages from use of the
+                      service.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      9. Termination
+                    </h4>
+                    <p class="text-text-secondary">
+                      You may stop using EchoLink anytime. We may suspend or
+                      terminate accounts that violate these Terms.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      10. Contact
+                    </h4>
+                    <p class="text-text-secondary">
+                      Questions? Email us at
+                      <span class="text-text-heading font-medium"
+                        >echolink.auth@gmail.com</span
+                      >.
+                    </p>
+                  </section>
+                </div>
+
+                <!-- PRIVACY CONTENT -->
+                <div
+                  *ngIf="activePolicy === 'privacy'"
+                  class="space-y-5 text-sm"
+                >
+                  <div
+                    class="rounded-xl border border-border-base bg-bg-base/20 p-4"
+                  >
+                    <p class="text-text-secondary">
+                      We collect only what’s necessary to operate EchoLink. We
+                      don’t sell your personal data.
+                    </p>
+                  </div>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      1. What We Collect
+                    </h4>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                      <li>Email address</li>
+                      <li>
+                        Password <strong>hash</strong> (never your raw password)
+                      </li>
+                      <li>Profile info you choose to provide</li>
+                      <li>Messages and attachments you send</li>
+                      <li>
+                        Basic logs (IP/device) for security and abuse prevention
+                      </li>
+                    </ul>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      2. How We Use Your Information
+                    </h4>
+                    <ul class="list-disc pl-5 text-text-secondary space-y-1">
+                      <li>Authenticate users</li>
+                      <li>Deliver messages</li>
+                      <li>Secure accounts and prevent abuse</li>
+                      <li>Provide customer support</li>
+                      <li>Improve EchoLink</li>
+                    </ul>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      3. Sharing
+                    </h4>
+                    <p class="text-text-secondary">
+                      We may share limited data with trusted service providers
+                      (hosting, databases, email like Brevo) and with legal
+                      authorities if required by law — only what’s necessary.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      4. Data Retention
+                    </h4>
+                    <p class="text-text-secondary">
+                      Account data is kept while your account is active.
+                      Messages are stored until deleted or your account is
+                      removed. Security logs are retained for a limited time.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      5. Security
+                    </h4>
+                    <p class="text-text-secondary">
+                      We use encrypted connections (HTTPS/WSS), secure password
+                      hashing, and restricted internal access. No system is
+                      perfect, but we work hard to protect your data.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      6. Your Rights
+                    </h4>
+                    <p class="text-text-secondary">
+                      You can update your info, request deletion, and contact us
+                      about your data anytime.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      7. International Processing
+                    </h4>
+                    <p class="text-text-secondary">
+                      Your data may be processed in countries other than your
+                      own, depending on where our servers are hosted.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      8. Changes
+                    </h4>
+                    <p class="text-text-secondary">
+                      We may update this policy as EchoLink evolves. Continued
+                      use means you accept the updated policy.
+                    </p>
+                  </section>
+
+                  <section class="space-y-2">
+                    <h4 class="text-base font-semibold text-text-heading">
+                      9. Contact
+                    </h4>
+                    <p class="text-text-secondary">
+                      Questions? Email us at
+                      <span class="text-text-heading font-medium"
+                        >echolink.auth@gmail.com</span
+                      >.
+                    </p>
+                  </section>
+                </div>
+              </div>
+
+              <!-- Footer -->
+              <div
+                class="px-6 py-4 border-t border-border-base flex items-center justify-end gap-2"
+              >
+                <button
+                  type="button"
+                  (click)="closePolicy()"
+                  class="h-10 px-4 rounded-xl border border-border-base bg-bg-base/20 hover:bg-bg-hover text-text-secondary hover:text-text-body transition"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Submit -->
         <button
           type="submit"
-          class="w-full h-11 rounded-lg bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active transition font-medium"
+          [disabled]="loading || registerForm.invalid"
+          class="w-full h-11 rounded-lg font-medium transition flex items-center justify-center gap-2 bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-button-primary-bg"
         >
-          Create account
+          <!-- Loading spinner -->
+          <span
+            *ngIf="loading"
+            class="h-4 w-4 rounded-full border-2 border-current border-t-transparent animate-spin"
+            aria-hidden="true"
+          ></span>
+
+          <!-- Button text -->
+          <span [class.opacity-80]="loading">
+            {{ loading ? "Creating account…" : "Create account" }}
+          </span>
         </button>
 
         <!-- Footer -->
@@ -107,6 +492,9 @@
           </a>
         </div>
       </form>
+      <p *ngIf="apiError" class="text-sm text-red-400">
+        {{ apiError }}
+      </p>
     </div>
   </div>
 </div>
