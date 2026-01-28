@@ -102,6 +102,9 @@ export class NavComponent implements OnInit {
         this.authService.clearAccessToken();
         this.router.navigate(['/auth']);
       },
+      error: () => {
+        this.router.navigate(['/auth']);
+      },
     });
   }
 }
