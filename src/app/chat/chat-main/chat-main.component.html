@@ -12,7 +12,6 @@
     <span class="text-xs tracking-[0.3em] text-white/50"> ECHOLINK </span>
   </div>
 </div>
-
 <section
   *ngIf="clickedConvo; else emptyState"
   class="flex flex-col h-[82vh] md:h-[85vh] min-h-0 bg-bg-panel"
@@ -77,6 +76,7 @@
     class="flex-1 min-h-0 overflow-y-auto px-4 py-2"
     #messageContainer
     (click)="activeReactionMessageId = null"
+    (scroll)="showScrollToBottomBtn()"
   >
     <div class="flex flex-col min-h-full gap-3 justify-end">
       <div *ngFor="let message of messages; let last = last" class="w-full">
@@ -191,6 +191,15 @@
       </div>
     </div>
   </div>
+  <button
+    *ngIf="showScrollToBottom"
+    type="button"
+    class="absolute bottom-24 right-6 z-40 h-11 w-11 rounded-full bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+    (click)="scrollToBottom()"
+    aria-label="Scroll to bottom"
+  >
+    <lucide-icon name="chevron-down" class="w-5 h-5"></lucide-icon>
+  </button>
 
   <!-- typing indicator -->
   <div class="px-4 pb-2" *ngIf="isOtherTyping">

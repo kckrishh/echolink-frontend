@@ -114,6 +114,16 @@ export class ChatMainComponent implements OnInit {
     }, 0);
   }
 
+  showScrollToBottom: boolean = false;
+
+  showScrollToBottomBtn() {
+    const el = this.messageContainer?.nativeElement;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    const threshold = 150;
+    const isAtBottom = distanceFromBottom < threshold;
+    this.showScrollToBottom = !isAtBottom;
+  }
+
   sendMessage() {
     if (this.messageText) {
       this.stompService.publish('/app/chat.sendMessage', {
