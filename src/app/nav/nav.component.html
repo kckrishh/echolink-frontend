@@ -161,6 +161,43 @@
     </div>
   </div>
 
+  <div
+    *ngIf="showLogoutModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+  >
+    <!-- Modal -->
+    <div
+      class="w-[90%] max-w-sm rounded-2xl bg-bg-panel border border-border-base shadow-echo-xl p-6 animate-scale-in"
+    >
+      <!-- Title -->
+      <h2 class="text-lg font-semibold text-text-heading mb-2">Log out?</h2>
+
+      <!-- Message -->
+      <p class="text-sm text-text-muted mb-6">
+        Are you sure you want to log out of your EchoLink account?
+      </p>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-3">
+        <button
+          type="button"
+          class="px-4 py-2 rounded-xl border border-border-base text-text-muted hover:text-text-body hover:bg-bg-hover transition"
+          (click)="showLogoutModal = false"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="px-4 py-2 rounded-xl bg-red-500/90 text-white hover:bg-red-600 shadow-echo-md transition"
+          (click)="logout()"
+        >
+          Log out
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MOBILE SEARCH OVERLAY (premium, clean) -->
   <div *ngIf="mobileSearchOpen" class="fixed inset-0 z-50 md:hidden">
     <div

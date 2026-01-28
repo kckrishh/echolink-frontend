@@ -93,4 +93,10 @@ export class NavComponent implements OnInit {
       this.showProfileDropDown = false;
     }
   }
+
+  showLogoutModal = false;
+
+  logout() {
+    this.authService.logout().subscribe();
+  }
 }
