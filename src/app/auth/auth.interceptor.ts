@@ -14,14 +14,13 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const token = this.authService.getAccessToken();
 
     if (
       req.url.includes('/auth/login') ||
-      req.url.includes('/auth/token/refresh') ||
-      req.url.includes('/auth/token/logout+')
+      req.url.includes('/auth/token/refresh')
     ) {
       return next.handle(req);
     }
