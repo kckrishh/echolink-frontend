@@ -55,6 +55,7 @@ export class ChatMainComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 768;
     });
+    this.scrollToBottom();
 
     this.route.queryParams.subscribe((params) => {
       this.conversationId = params['conversationId'];

@@ -18,6 +18,8 @@ import {
   PanelLeft,
   PanelRight,
   ArrowLeft,
+  SquarePen,
+  SlidersHorizontal,
 } from 'lucide-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -44,6 +46,8 @@ import { FormsModule } from '@angular/forms';
       PanelLeft,
       PanelRight,
       ArrowLeft,
+      SquarePen,
+      SlidersHorizontal,
     }),
   ],
 })
