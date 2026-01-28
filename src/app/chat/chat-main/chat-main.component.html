@@ -189,6 +189,23 @@
           </div>
         </div>
       </div>
+      <div class="px-4 pb-2 mt-12" *ngIf="isOtherTyping">
+        <div class="flex items-center gap-2">
+          <img
+            [src]="clickedConvo?.otherUserAvatar"
+            class="h-6 w-6 rounded-full border border-border-base"
+          />
+          <div
+            class="px-3 py-2 rounded-2xl bg-bg-hover border border-border-base shadow-echo-md"
+          >
+            <div class="flex gap-1">
+              <span class="typing-dot"></span>
+              <span class="typing-dot typing-dot-2"></span>
+              <span class="typing-dot typing-dot-3"></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <button
@@ -202,23 +219,6 @@
   </button>
 
   <!-- typing indicator -->
-  <div class="px-4 pb-2 mt-12" *ngIf="isOtherTyping">
-    <div class="flex items-center gap-2">
-      <img
-        [src]="clickedConvo?.otherUserAvatar"
-        class="h-6 w-6 rounded-full border border-border-base"
-      />
-      <div
-        class="px-3 py-2 rounded-2xl bg-bg-hover border border-border-base shadow-echo-md"
-      >
-        <div class="flex gap-1">
-          <span class="typing-dot"></span>
-          <span class="typing-dot typing-dot-2"></span>
-          <span class="typing-dot typing-dot-3"></span>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- composer -->
   <div class="px-4 py-3 border-t border-border-base bg-bg-panel">
