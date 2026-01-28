@@ -9,7 +9,7 @@ import { ConversationService } from './service/conversation.service';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit {
   isGroup = false;
   isMobile = false;
 
@@ -44,10 +44,5 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.conversationService.enterChatOnMobile;
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.navSub.unsubscribe();
-    this.viewSub.unsubscribe();
   }
 }

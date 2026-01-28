@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
         if (this.router.url.includes('chat')) {
           this.isChat = true;
         }
-        console.log(this.showNavbar);
       });
   }
 }
