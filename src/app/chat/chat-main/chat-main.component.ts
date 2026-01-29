@@ -265,6 +265,10 @@ export class ChatMainComponent implements OnInit {
 
   openReactionPicker(message: MessageDto, event: MouseEvent) {
     event.stopPropagation();
+    const el = this.messageContainer?.nativeElement;
+    console.log(el.scrollTop);
+    el.scrollTop += 25;
+    console.log(el.scrollTop);
     this.activeReactionMessageId = message.messageId;
   }
 
@@ -284,8 +288,6 @@ export class ChatMainComponent implements OnInit {
 
   react(message: MessageDto, type: ReactionType, event: Event) {
     // close picker instantly
-
-    console.log('react button clicked');
     event?.stopPropagation();
     this.activeReactionMessageId = null;
 
@@ -335,7 +337,9 @@ export class ChatMainComponent implements OnInit {
             this.messages[msgIndex] = { ...msg, reactions };
             this.messages = [...this.messages]; // ✅ THIS is the hammer
             const el = this.messageContainer?.nativeElement;
-            el.scrollTop += 15;
+            console.log(el.scrollTop);
+            el.scrollTop += 25;
+            console.log(el.scrollTop);
           });
         }
       },
