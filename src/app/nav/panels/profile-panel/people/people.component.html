@@ -1,4 +1,4 @@
-<section class="w-[80%] mx-auto pt-6">
+<section class="w-[80%] mx-auto pt-6 overflow-visible">
   <main class="w-full flex flex-col gap-4">
     <!-- Tabs -->
     <div class="flex gap-2 border-b border-border-base pb-2">
@@ -7,7 +7,7 @@
         class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-bg-hover"
         [ngClass]="{
           'bg-bg-hover text-text-body': currTab === 'friends',
-          'text-text-muted': currTab !== 'friends'
+          'text-text-muted': currTab !== 'friends',
         }"
       >
         Friends
@@ -18,7 +18,7 @@
         class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-bg-hover"
         [ngClass]="{
           'bg-bg-hover text-text-body': currTab === 'requests',
-          'text-text-muted': currTab !== 'requests'
+          'text-text-muted': currTab !== 'requests',
         }"
       >
         Requests
@@ -29,7 +29,7 @@
         class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-bg-hover"
         [ngClass]="{
           'bg-bg-hover text-text-body': currTab === 'blocked',
-          'text-text-muted': currTab !== 'blocked'
+          'text-text-muted': currTab !== 'blocked',
         }"
       >
         Blocked
@@ -73,7 +73,7 @@
               </p>
 
               <p class="text-[13px] text-text-muted">
-                Joined {{ friend.joinedAt | date : "mediumDate" }}
+                Joined {{ friend.joinedAt | date: "mediumDate" }}
               </p>
             </div>
           </div>

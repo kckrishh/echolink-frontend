@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit {
         if (this.router.url.includes('dm') && this.isMobile) {
           this.conversationService.backToList();
         } else {
-          this.conversationService.enterChatOnMobile;
+          this.conversationService.enterChatOnMobile();
         }
       });
   }
