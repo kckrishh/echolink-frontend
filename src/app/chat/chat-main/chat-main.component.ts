@@ -21,7 +21,7 @@ type WsEvent<T> = {
   data: T;
 };
 
-type ReactionType = 'LIKE' | 'LAUGH' | 'SAD' | 'ANGRY' | 'FIRE';
+type ReactionType = 'LIKE' | 'LAUGH' | 'LOVE' | 'SAD' | 'ANGRY' | 'FIRE';
 
 @Component({
   selector: 'app-chat-main',
@@ -203,7 +203,7 @@ export class ChatMainComponent implements OnInit {
       (message: IMessage) => {
         const resp = JSON.parse(message.body);
 
-        let threshold = 130;
+        let threshold = 40;
         const el = this.messageContainer?.nativeElement;
         const distanceFromBottom =
           el.scrollHeight - el.scrollTop - el.clientHeight;
@@ -250,6 +250,8 @@ export class ChatMainComponent implements OnInit {
         return '👍';
       case 'LAUGH':
         return '😂';
+      case 'LOVE':
+        return '❤️';
       case 'SAD':
         return '😢';
       case 'ANGRY':
@@ -332,6 +334,8 @@ export class ChatMainComponent implements OnInit {
 
             this.messages[msgIndex] = { ...msg, reactions };
             this.messages = [...this.messages]; // ✅ THIS is the hammer
+            const el = this.messageContainer?.nativeElement;
+            el.scrollTop += 15;
           });
         }
       },
