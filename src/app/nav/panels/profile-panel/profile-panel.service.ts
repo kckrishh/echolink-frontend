@@ -8,6 +8,6 @@ export class ProfilePanelService {
   constructor(private http: HttpClient) {}
 
   getFriends() {
-    return this.http.get(`http://localhost:8080/people/getFriends`);
+    return this.http.get(`https://api.echolink.live/people/getFriends`);
   }
 }
