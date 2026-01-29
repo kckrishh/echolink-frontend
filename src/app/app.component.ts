@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   showNavbar = true;
-  isChat!: boolean;
+  isChat: boolean = false;
 
   constructor(
     private stompService: StompService,
@@ -26,9 +26,7 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         const route = this.router.routerState.root.firstChild;
         this.showNavbar = !route?.snapshot.data['hideNavbar'];
-        if (this.router.url.includes('chat')) {
-          this.isChat = true;
-        }
+        this.isChat = this.router.url.includes('/chat');
       });
   }
 }
