@@ -202,10 +202,18 @@ export class ChatMainComponent implements OnInit {
       '/user/queue/typing',
       (message: IMessage) => {
         const resp = JSON.parse(message.body);
-        console.log(resp);
+
+        let threshold = 130;
+        const el = this.messageContainer?.nativeElement;
+        const distanceFromBottom =
+          el.scrollHeight - el.scrollTop - el.clientHeight;
+        const isAtBottom = distanceFromBottom < threshold;
 
         if (String(resp.data.conversationId) === String(this.conversationId)) {
           this.isOtherTyping = resp.data.typing;
+          if (!isAtBottom) {
+            this.scrollToBottom();
+          }
         }
       },
     );
