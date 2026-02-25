@@ -267,7 +267,7 @@ export class ChatMainComponent implements OnInit {
     event.stopPropagation();
     const el = this.messageContainer?.nativeElement;
     console.log(el.scrollTop);
-    el.scrollTop += 25;
+    el.scrollTop += 40;
     console.log(el.scrollTop);
     this.activeReactionMessageId = message.messageId;
   }
@@ -337,9 +337,7 @@ export class ChatMainComponent implements OnInit {
             this.messages[msgIndex] = { ...msg, reactions };
             this.messages = [...this.messages]; // ✅ THIS is the hammer
             const el = this.messageContainer?.nativeElement;
-            console.log(el.scrollTop);
-            el.scrollTop += 25;
-            console.log(el.scrollTop);
+            el.scrollTop += 40;
           });
         }
       },
