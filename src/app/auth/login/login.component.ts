@@ -15,11 +15,12 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  showError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -38,6 +39,10 @@ export class LoginComponent {
         this.authService.setAccessToken(response.jwt);
         console.log(response.jwt);
         this.router.navigate(['/chat']);
+      },
+      error: (err: any) => {
+        this.showError = true;
+        setTimeout(() => (this.showError = false), 5000);
       },
     });
   }

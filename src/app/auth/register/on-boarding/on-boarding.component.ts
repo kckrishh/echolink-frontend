@@ -48,7 +48,7 @@ export class OnboardingComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private registerService: RegisterService
+    private registerService: RegisterService,
   ) {}
 
   ngOnInit(): void {
@@ -84,7 +84,7 @@ export class OnboardingComponent implements OnInit {
 
   getAvatarUrl(style: string, seed: string): string {
     return `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(
-      seed
+      seed,
     )}`;
   }
 
@@ -116,7 +116,7 @@ export class OnboardingComponent implements OnInit {
         this.email,
         username,
         this.form.value.bio.trim(),
-        this.selectedAvatarUrl
+        this.selectedAvatarUrl,
       )
       .subscribe({
         next: () => {
@@ -125,7 +125,7 @@ export class OnboardingComponent implements OnInit {
           // cleanup
           localStorage.removeItem('pendingEmail');
 
-          this.router.navigate(['/auth']);
+          this.router.navigate(['/chat']);
         },
         error: (err) => {
           this.loading = false;

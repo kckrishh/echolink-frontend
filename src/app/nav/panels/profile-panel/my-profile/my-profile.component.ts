@@ -39,7 +39,7 @@ export class MyProfileComponent implements OnInit {
     },
   ];
 
-  // ===== SELECTED AVATAR =====
+  //SELECTED AVATAR
   selectedAvatar: {
     style: string;
     seed: string;
@@ -47,7 +47,10 @@ export class MyProfileComponent implements OnInit {
 
   me: Me | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.authService.getMe().subscribe((next: Me | null) => {
@@ -55,12 +58,12 @@ export class MyProfileComponent implements OnInit {
     });
   }
 
-  // ===== SELECT AVATAR =====
+  //SELECT AVATAR
   selectAvatar(style: string, seed: string): void {
     this.selectedAvatar = { style, seed };
   }
 
-  // ===== SAVE AVATAR =====
+  //SAVE AVATAR
   saveAvatar(style: string, seed: string): void {
     let newUrl = this.getAvatarUrl(style, seed);
     this.authService.changeProfile(newUrl).subscribe((next) => {
@@ -68,7 +71,7 @@ export class MyProfileComponent implements OnInit {
     });
   }
 
-  // ===== HELPER FOR IMAGE URL (optional but clean) =====
+  //HELPER FOR IMAGE URL (optional but clean)
   getAvatarUrl(style: string, seed: string): string {
     return `https://api.dicebear.com/9.x/${style}/svg?seed=${seed}`;
   }

@@ -39,9 +39,9 @@ export class ChatComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
         if (this.router.url.includes('dm') && this.isMobile) {
-          this.conversationService.backToList();
-        } else {
           this.conversationService.enterChatOnMobile();
+        } else {
+          this.conversationService.backToList();
         }
       });
   }

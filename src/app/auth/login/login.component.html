@@ -109,6 +109,20 @@
             Create one
           </a>
         </div>
+        <div
+          *ngIf="showError"
+          class="rounded-lg border border-input-errorBorder bg-bg-overlay px-4 py-3 flex items-start gap-3"
+        >
+          <!-- Left red accent line -->
+          <div class="w-1 rounded-full bg-state-error"></div>
+
+          <div class="flex-1">
+            <p class="text-sm font-medium text-text-heading">Sign in failed</p>
+            <p class="text-sm text-text-danger mt-1">
+              Either the email or password you entered is incorrect.
+            </p>
+          </div>
+        </div>
       </form>
     </div>
   </div>
