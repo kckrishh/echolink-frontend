@@ -16,11 +16,9 @@
   *ngIf="clickedConvo; else emptyState"
   class="flex flex-col h-[82vh] md:h-[85vh] min-h-0 bg-bg-panel"
 >
-  <!-- header -->
   <header
     class="flex justify-between border-b border-border-base shrink-0 h-14 sm:h-16 md:h-[5rem]"
   >
-    <!-- header left side -->
     <div
       class="px-3 sm:px-4 flex justify-start items-center text-text-heading h-full gap-2 sm:gap-3 min-w-0"
     >
@@ -71,7 +69,6 @@
     </div>
   </header>
 
-  <!-- messages -->
   <div
     class="flex-1 min-h-0 overflow-y-auto px-4 py-2"
     #messageContainer
@@ -115,7 +112,6 @@
                 {{ message.createdAt | date: "shortTime" }}
               </span>
 
-              <!-- ✅ ONLY CHANGE IS HERE -->
               <div class="relative group w-fit max-w-full">
                 <div
                   class="inline-block w-fit max-w-full px-4 py-2 rounded-2xl whitespace-pre-line break-words shadow-echo-md"
@@ -130,6 +126,7 @@
                   {{ message.content }}
                 </div>
 
+                <!-- typing reaction  -->
                 <button
                   type="button"
                   class="hidden md:flex absolute -top-3 h-7 w-7 items-center justify-center rounded-xl border border-border-base bg-bg-panel/90 backdrop-blur shadow-echo-md text-text-muted hover:text-text-body hover:bg-bg-hover transition opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
@@ -238,17 +235,25 @@
     </div>
   </div>
 
-  <!-- composer -->
+  <!-- send message -->
   <div class="px-4 py-3 border-t border-border-base bg-bg-panel">
-    <form (ngSubmit)="sendMessage()">
+    <form (ngSubmit)="sendMessage()" class="flex items-center gap-3">
       <input
         type="text"
         placeholder="Type a message"
-        class="w-full h-10 rounded-2xl bg-input-bg border border-input-border px-4 text-text-body"
+        class="flex-1 h-11 rounded-2xl bg-input-bg border border-input-border px-4 text-text-body placeholder:text-input-placeholder focus:border-input-focusBorder focus:ring-1 focus:ring-border-focus outline-none transition"
         [(ngModel)]="messageText"
         name="message"
         (input)="onTyping()"
       />
+
+      <button
+        type="submit"
+        [disabled]="!messageText?.trim()"
+        class="h-11 px-5 rounded-2xl bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active disabled:bg-button-disabled-bg disabled:text-button-disabled-text disabled:cursor-not-allowed transition font-medium"
+      >
+        Send
+      </button>
     </form>
   </div>
 </section>

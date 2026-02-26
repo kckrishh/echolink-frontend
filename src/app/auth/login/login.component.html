@@ -1,11 +1,9 @@
 <div
   class="min-h-screen w-full bg-bg-base flex items-center justify-center px-6"
 >
-  <!-- Outer container -->
   <div
     class="w-full max-w-5xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-md overflow-hidden grid grid-cols-1 md:grid-cols-2"
   >
-    <!-- LEFT SIDE : Text / Branding -->
     <div class="relative p-10 flex flex-col justify-center gap-6 bg-bg-panel">
       <div>
         <h1 class="text-3xl font-semibold text-text-heading leading-tight">
@@ -19,7 +17,6 @@
         </p>
       </div>
 
-      <!-- Logo bottom-left -->
       <div class="mt-10">
         <div
           class="h-12 w-12 rounded-2xl bg-brand/10 border border-border-base flex items-center justify-center shadow-echo"
@@ -29,14 +26,12 @@
       </div>
     </div>
 
-    <!-- RIGHT SIDE : Form -->
     <div class="p-10 flex items-center">
       <form
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()"
         class="w-full space-y-5"
       >
-        <!-- Username / Email -->
         <div class="space-y-1">
           <label class="text-sm text-text-secondary"> Email or username </label>
 
@@ -58,7 +53,6 @@
           </p>
         </div>
 
-        <!-- Password -->
         <div class="space-y-1">
           <label class="text-sm text-text-secondary"> Password </label>
 
@@ -80,7 +74,6 @@
           </p>
         </div>
 
-        <!-- Forgot -->
         <div class="flex justify-end">
           <a
             href="#"
@@ -90,15 +83,21 @@
           </a>
         </div>
 
-        <!-- Submit -->
         <button
           type="submit"
           class="w-full h-11 rounded-lg bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover active:bg-button-primary-active transition font-medium"
         >
-          Sign in
+          <span
+            *ngIf="loading"
+            class="h-4 w-4 rounded-full border-2 border-current border-t-transparent animate-spin"
+            aria-hidden="true"
+          ></span>
+
+          <span [class.opacity-80]="loading">
+            {{ loading ? "Signing in…" : "Create account" }}
+          </span>
         </button>
 
-        <!-- Footer -->
         <div class="pt-4 text-center text-sm text-text-muted">
           Don’t have an account?
           <a
@@ -113,7 +112,6 @@
           *ngIf="showError"
           class="rounded-lg border border-input-errorBorder bg-bg-overlay px-4 py-3 flex items-start gap-3"
         >
-          <!-- Left red accent line -->
           <div class="w-1 rounded-full bg-state-error"></div>
 
           <div class="flex-1">

@@ -1,4 +1,3 @@
-<!-- chat.component.html -->
 <div class="h-full md:h-[90vh] w-full overflow-hidden flex mx-auto">
   <section
     class="h-full w-full grid rounded-md shadow-2xl"
@@ -8,7 +7,6 @@
       'grid-cols-1': isMobile,
     }"
   >
-    <!-- ✅ DESKTOP/TABLET (md+): normal layout -->
     <div class="bg-bg-panel min-w-0 h-full min-h-0 hidden md:block">
       <app-sidebar-left></app-sidebar-left>
     </div>
@@ -24,8 +22,6 @@
       <app-sidebar-right></app-sidebar-right>
     </div>
 
-    <!-- ✅ MOBILE (<md): FULL SCREEN switch between LIST and CHAT -->
-    <!-- LIST (full screen) -->
     <div
       class="bg-bg-panel min-w-0 h-full min-h-0 md:hidden"
       *ngIf="isMobile && mobileView === 'list'"
@@ -33,21 +29,10 @@
       <app-sidebar-left></app-sidebar-left>
     </div>
 
-    <!-- CHAT (full screen) -->
     <div
       class="min-w-0 h-[85dvh] min-h-0 md:hidden"
       *ngIf="isMobile && mobileView === 'chat'"
     >
-      <!-- Back button overlay (top-left) -->
-      <button
-        type="button"
-        class="fixed md:hidden left-3 top-[calc(10px+env(safe-area-inset-top))] z-[60] h-10 w-10 rounded-xl bg-bg-panel border border-border-base shadow-echo-md flex items-center justify-center text-text-muted hover:text-text-body hover:bg-bg-hover transition"
-        (click)="mobileView = 'list'"
-        aria-label="Back to conversations"
-      >
-        <lucide-icon name="chevron-left" class="w-5 h-5"></lucide-icon>
-      </button>
-
       <app-chat-main></app-chat-main>
     </div>
   </section>

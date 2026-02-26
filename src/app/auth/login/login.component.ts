@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  loading: boolean = false;
   showError: boolean = false;
 
   constructor(
@@ -36,8 +37,10 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response: any) => {
+        this.loading = true;
         this.authService.setAccessToken(response.jwt);
         console.log(response.jwt);
+        this.loading = false;
         this.router.navigate(['/chat']);
       },
       error: (err: any) => {

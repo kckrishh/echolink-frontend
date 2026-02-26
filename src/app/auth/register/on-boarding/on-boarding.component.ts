@@ -122,7 +122,6 @@ export class OnboardingComponent implements OnInit {
         next: () => {
           this.loading = false;
 
-          // cleanup
           localStorage.removeItem('pendingEmail');
 
           this.router.navigate(['/chat']);

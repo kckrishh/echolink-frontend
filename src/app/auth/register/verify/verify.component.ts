@@ -20,7 +20,7 @@ export class VerifyComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private registerService: RegisterService
+    private registerService: RegisterService,
   ) {}
 
   ngOnInit(): void {
@@ -74,19 +74,17 @@ export class VerifyComponent implements OnInit {
     this.loading = true;
     this.apiError = null;
 
-    this.registerService
-      .registerStart(this.email, 'TEMP') // ⚠️ read note below
-      .subscribe({
-        next: () => {
-          this.loading = false;
-        },
-        error: (err) => {
-          this.loading = false;
-          this.apiError =
-            err?.error?.message ||
-            err?.error ||
-            'Failed to resend verification code';
-        },
-      });
+    this.registerService.registerStart(this.email, 'TEMP').subscribe({
+      next: () => {
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.apiError =
+          err?.error?.message ||
+          err?.error ||
+          'Failed to resend verification code';
+      },
+    });
   }
 }

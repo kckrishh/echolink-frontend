@@ -1,11 +1,9 @@
 <div
   class="min-h-screen w-full bg-bg-base flex items-center justify-center px-6"
 >
-  <!-- Outer container -->
   <div
     class="w-full max-w-4xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-md overflow-hidden grid grid-cols-1 md:grid-cols-2"
   >
-    <!-- LEFT SIDE : Text / Branding -->
     <div class="relative p-10 flex flex-col justify-center gap-6 bg-bg-panel">
       <div>
         <h1 class="text-3xl font-semibold text-text-heading leading-tight">
@@ -19,7 +17,6 @@
         </p>
       </div>
 
-      <!-- Logo bottom-left -->
       <div class="mt-10">
         <div
           class="h-12 w-12 rounded-2xl bg-brand/10 border border-border-base flex items-center justify-center shadow-echo"
@@ -29,14 +26,12 @@
       </div>
     </div>
 
-    <!-- RIGHT SIDE : Verify Form -->
     <div class="p-10 flex items-center">
       <form
         [formGroup]="verifyForm"
         (ngSubmit)="onSubmit()"
         class="w-full space-y-6"
       >
-        <!-- Info -->
         <p class="text-sm text-text-muted">
           Verification code sent to
           <span class="text-text-body font-medium">
@@ -44,7 +39,6 @@
           </span>
         </p>
 
-        <!-- Code input -->
         <div class="space-y-1">
           <label class="text-sm text-text-secondary"> Verification code </label>
 
@@ -67,12 +61,10 @@
           </p>
         </div>
 
-        <!-- API error -->
         <p *ngIf="apiError" class="text-sm text-text-danger">
           {{ apiError }}
         </p>
 
-        <!-- Submit -->
         <button
           type="submit"
           [disabled]="loading"
@@ -81,7 +73,6 @@
           {{ loading ? "Verifying..." : "Verify email" }}
         </button>
 
-        <!-- Resend -->
         <div class="pt-4 text-center text-sm text-text-muted">
           Didn’t receive the code?
           <button

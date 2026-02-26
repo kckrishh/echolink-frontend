@@ -1,13 +1,10 @@
-<!-- navbar.component.html -->
 <section class="flex items-center h-14 sm:h-16 md:h-full relative md:px-6">
-  <!-- LEFT (logo) -->
   <div class="flex items-center gap-2 min-w-0">
     <img
       src="logo.png"
       class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20"
       alt=""
     />
-    <!-- hide text on mobile -->
     <h1
       class="hidden md:block text-text-heading text-lg sm:text-xl md:text-3xl font-bold -ml-2 tracking-widest"
     >
@@ -15,8 +12,6 @@
     </h1>
   </div>
 
-  <!-- CENTER (search) -->
-  <!-- desktop/tablet search bar -->
   <div class="hidden md:flex flex-1 justify-center px-4">
     <form class="w-full max-w-[42rem]" (ngSubmit)="searchUser()">
       <input
@@ -29,9 +24,7 @@
     </form>
   </div>
 
-  <!-- RIGHT (icons + avatar) -->
   <div class="flex items-center gap-2 md:gap-6 ml-auto">
-    <!-- MOBILE search trigger -->
     <button
       type="button"
       class="md:hidden p-2 rounded-xl hover:bg-bg-hover transition text-white"
@@ -65,7 +58,6 @@
       ></lucide-icon>
     </a>
 
-    <!-- avatar dropdown (same logic, just responsive sizing/spacing) -->
     <div class="relative">
       <button
         class="relative cursor-pointer rounded-xl hover:bg-bg-hover px-2 py-1 transition"
@@ -171,15 +163,12 @@
     <div
       class="w-[90%] max-w-sm rounded-2xl bg-bg-panel border border-border-base shadow-echo-xl p-6 animate-scale-in"
     >
-      <!-- Title -->
       <h2 class="text-lg font-semibold text-text-heading mb-2">Log out?</h2>
 
-      <!-- Message -->
       <p class="text-sm text-text-muted mb-6">
         Are you sure you want to log out of your EchoLink account?
       </p>
 
-      <!-- Actions -->
       <div class="flex justify-end gap-3">
         <button
           type="button"
@@ -200,7 +189,7 @@
     </div>
   </div>
 
-  <!-- MOBILE SEARCH OVERLAY (premium, clean) -->
+  <!-- SEARCH OVERLAY-->
   <div *ngIf="mobileSearchOpen" class="fixed inset-0 z-50 md:hidden">
     <div
       class="absolute inset-0 bg-bg-base/80 backdrop-blur-sm"
@@ -242,7 +231,6 @@
     </div>
   </div>
 
-  <!-- your existing searchedResult modal stays the same -->
   <div
     *ngIf="searchedResult"
     class="fixed inset-0 bg-bg-base/80 backdrop-blur-sm flex items-center justify-center z-40"

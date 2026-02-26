@@ -1,11 +1,9 @@
 <div
   class="min-h-screen w-full bg-bg-base flex items-center justify-center px-6"
 >
-  <!-- Outer container -->
   <div
     class="w-full max-w-5xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-md overflow-hidden grid grid-cols-1 md:grid-cols-2"
   >
-    <!-- LEFT SIDE : Text / Branding -->
     <div class="relative p-10 flex flex-col justify-center gap-6 bg-bg-panel">
       <div>
         <h1 class="text-3xl font-semibold text-text-heading leading-tight">
@@ -19,7 +17,6 @@
         </p>
       </div>
 
-      <!-- Logo bottom-left -->
       <div class="mt-10">
         <div
           class="h-12 w-12 rounded-2xl bg-brand/10 border border-border-base flex items-center justify-center shadow-echo"
@@ -29,14 +26,12 @@
       </div>
     </div>
 
-    <!-- RIGHT SIDE : Register Form -->
     <div class="p-10 flex items-center">
       <form
         class="w-full space-y-5"
         [formGroup]="registerForm"
         (ngSubmit)="onSubmit()"
       >
-        <!-- Email -->
         <div class="space-y-1">
           <label class="text-sm text-text-secondary"> Email </label>
           <input
@@ -47,7 +42,6 @@
           />
         </div>
 
-        <!-- Password -->
         <div class="space-y-1">
           <label class="text-sm text-text-secondary"> Password </label>
           <input
@@ -58,7 +52,6 @@
           />
         </div>
 
-        <!-- Confirm Password -->
         <div class="space-y-1">
           <label class="text-sm text-text-secondary"> Confirm password </label>
           <input
@@ -112,17 +105,14 @@
             role="dialog"
             aria-modal="true"
           >
-            <!-- Backdrop -->
             <div
               class="absolute inset-0 bg-black/70 backdrop-blur-sm"
               (click)="closePolicy()"
             ></div>
 
-            <!-- Modal -->
             <div
               class="relative w-full max-w-3xl rounded-2xl border border-border-base bg-bg-panel shadow-echo-xl overflow-hidden"
             >
-              <!-- Header -->
               <div
                 class="flex items-center justify-between px-6 py-4 border-b border-border-base bg-bg-panel/80 backdrop-blur"
               >
@@ -178,9 +168,7 @@
                 </button>
               </div>
 
-              <!-- Scrollable body -->
               <div class="px-6 py-5 max-h-[70vh] overflow-y-auto">
-                <!-- TERMS CONTENT -->
                 <div *ngIf="activePolicy === 'terms'" class="space-y-5 text-sm">
                   <div
                     class="rounded-xl border border-border-base bg-bg-base/20 p-4"
@@ -325,7 +313,6 @@
                   </section>
                 </div>
 
-                <!-- PRIVACY CONTENT -->
                 <div
                   *ngIf="activePolicy === 'privacy'"
                   class="space-y-5 text-sm"
