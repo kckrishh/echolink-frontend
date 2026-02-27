@@ -30,7 +30,7 @@ export class RegisterComponent {
   loading = false;
   apiError: string | null = null;
   policyOpen = false;
-  activePolicy: 'terms' | 'privacy' = 'terms';
+  activePolicy: 'terms' | 'privacy' | null = null;
 
   constructor(
     private registerService: RegisterService,
@@ -55,6 +55,7 @@ export class RegisterComponent {
 
   closePolicy() {
     this.policyOpen = false;
+    this.activePolicy = null;
   }
   onSubmit() {
     this.apiError = null;
