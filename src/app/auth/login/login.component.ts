@@ -30,6 +30,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    this.loading = true;
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -37,7 +38,6 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response: any) => {
-        this.loading = true;
         this.authService.setAccessToken(response.jwt);
         console.log(response.jwt);
         this.loading = false;
