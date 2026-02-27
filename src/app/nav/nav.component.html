@@ -245,6 +245,7 @@
     </div>
   </div>
 
+  <!-- search modal  -->
   <div
     *ngIf="searchedResult"
     class="fixed inset-0 bg-bg-base/80 backdrop-blur-sm flex items-center justify-center z-40"
@@ -252,36 +253,61 @@
     <div
       class="bg-bg-overlay border border-border-base rounded-2xl shadow-echo-md w-[30rem] max-w-[92vw] px-6 py-5 flex flex-col gap-5"
     >
-      <div class="flex justify-between items-center">
-        <h2 class="text-text-heading font-semibold text-lg tracking-wide">
-          User Found
-        </h2>
-        <button
-          (click)="closeModal()"
-          class="text-text-muted hover:text-text-body text-xl"
-        >
-          ✕
-        </button>
-      </div>
-
-      <div
-        class="flex items-center gap-4 p-4 bg-bg-panel rounded-xl border border-border-base"
-      >
-        <img
-          [src]="searchedResult.avatar"
-          class="h-14 w-14 rounded-xl border border-border-base"
-        />
-
-        <div class="flex flex-col min-w-0">
-          <span class="text-text-heading font-semibold text-base truncate">
-            {{ searchedResult.username }}
-          </span>
-
-          <span class="text-text-muted text-xs">
-            Joined {{ searchedResult.joinedAt ? null : "2025, May 25" }}
-          </span>
+      <ng-template *ngIf="searchedResult && searchedUsername !== 'error'">
+        <div class="flex justify-between items-center">
+          <h2 class="text-text-heading font-semibold text-lg tracking-wide">
+            User Found
+          </h2>
+          <button
+            (click)="closeModal()"
+            class="text-text-muted hover:text-text-body text-xl"
+          >
+            ✕
+          </button>
         </div>
-      </div>
+
+        <div
+          class="flex items-center gap-4 p-4 bg-bg-panel rounded-xl border border-border-base"
+        >
+          <img
+            [src]="searchedResult.avatar"
+            class="h-14 w-14 rounded-xl border border-border-base"
+          />
+
+          <div class="flex flex-col min-w-0">
+            <span class="text-text-heading font-semibold text-base truncate">
+              {{ searchedResult.username }}
+            </span>
+
+            <span class="text-text-muted text-xs">
+              Joined {{ searchedResult.joinedAt ? null : "2025, May 25" }}
+            </span>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- if searchedResult === error show this -->
+      <ng-template *ngIf="searchedResult && searchedResult === 'error'">
+        <div
+          class="flex flex-col items-center gap-3 p-6 bg-bg-panel rounded-xl border border-input-errorBorder"
+        >
+          <lucide-icon
+            name="user-x"
+            class="w-10 h-10 text-state-error"
+          ></lucide-icon>
+
+          <p class="text-text-heading font-semibold text-base">
+            User not found
+          </p>
+
+          <p class="text-text-muted text-sm text-center max-w-xs">
+            No user exists with the username
+            <span class="text-text-danger font-medium">
+              "{{ searchedUsername }}"
+            </span>
+          </p>
+        </div>
+      </ng-template>
 
       <div class="flex justify-end gap-3">
         <button
@@ -293,6 +319,7 @@
 
         <button
           (click)="openChat()"
+          *ngIf="searchedResult && searchedResult !== 'error'"
           class="px-5 py-1.5 bg-brand-active text-text-onAccent text-sm rounded-lg hover:bg-brand-hover transition"
         >
           Message

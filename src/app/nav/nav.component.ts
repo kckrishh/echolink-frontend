@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { ConversationService } from '../chat/service/conversation.service';
 import { AuthService } from '../auth/auth.service';
 import { Me } from '../interfaces/me';
-import { filter, take, tap } from 'rxjs';
+import { filter, finalize, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -55,15 +55,19 @@ export class NavComponent implements OnInit {
   }
 
   searchUser() {
-    let username = this.searchedUsername;
+    this.loadingForUserSearch = true;
     if (this.searchedUsername) {
       this.searchUserService
         .searchUser(this.searchedUsername)
-        .subscribe((next) => {
-          this.loadingForUserSearch = true;
-          this.searchedResult = next;
-          this.cdr.detectChanges();
-          this.loadingForUserSearch = false;
+        .pipe(finalize(() => (this.loadingForUserSearch = false)))
+        .subscribe({
+          next: (next) => {
+            this.searchedResult = next;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.searchedResult = 'error';
+          },
         });
     }
   }
