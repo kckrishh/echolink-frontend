@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -36,17 +37,24 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.loginForm.value).subscribe({
-      next: (response: any) => {
-        this.authService.setAccessToken(response.jwt);
-        console.log(response.jwt);
-        this.loading = false;
-        this.router.navigate(['/chat']);
-      },
-      error: (err: any) => {
-        this.showError = true;
-        setTimeout(() => (this.showError = false), 5000);
-      },
-    });
+    this.authService
+      .login(this.loginForm.value)
+      .pipe({
+        finalize: () => {
+          this.loading = false;
+        },
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.authService.setAccessToken(response.jwt);
+          console.log(response.jwt);
+          this.loading = false;
+          this.router.navigate(['/chat']);
+        },
+        error: (err: any) => {
+          this.showError = true;
+          setTimeout(() => (this.showError = false), 5000);
+        },
+      });
   }
 }
