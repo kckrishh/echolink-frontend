@@ -24,6 +24,7 @@ export class NavComponent implements OnInit {
   showProfileDropDown: boolean = false;
   me: Me | null = null;
   mobileSearchOpen = false;
+  loadingForUserSearch = false;
 
   constructor(
     private searchUserService: SearchUserService,
@@ -54,12 +55,15 @@ export class NavComponent implements OnInit {
   }
 
   searchUser() {
+    let username = this.searchedUsername;
     if (this.searchedUsername) {
       this.searchUserService
         .searchUser(this.searchedUsername)
         .subscribe((next) => {
+          this.loadingForUserSearch = true;
           this.searchedResult = next;
           this.cdr.detectChanges();
+          this.loadingForUserSearch = false;
         });
     }
   }
