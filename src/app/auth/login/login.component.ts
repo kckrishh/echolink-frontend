@@ -39,11 +39,11 @@ export class LoginComponent {
 
     this.authService
       .login(this.loginForm.value)
-      .pipe({
-        finalize: () => {
+      .pipe(
+        finalize(() => {
           this.loading = false;
-        },
-      })
+        }),
+      )
       .subscribe({
         next: (response: any) => {
           this.authService.setAccessToken(response.jwt);

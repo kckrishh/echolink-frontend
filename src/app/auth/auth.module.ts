@@ -9,9 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './register/register.component';
 import { VerifyComponent } from './register/verify/verify.component';
 import { OnboardingComponent } from './register/on-boarding/on-boarding.component';
+import { PrivacyPolicyComponent } from './register/privacy-policy/privacy-policy.component';
 
 @NgModule({
-  declarations: [AuthComponent, LoginComponent, RegisterComponent, VerifyComponent, OnboardingComponent],
+  declarations: [AuthComponent, LoginComponent, RegisterComponent, VerifyComponent, OnboardingComponent, PrivacyPolicyComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
